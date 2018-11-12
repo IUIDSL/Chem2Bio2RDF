@@ -1,0 +1,113 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/biogrid/WEB-INF/mapping.n3#> .
+#@prefix db: <> .
+@prefix biogrid: <http://chem2bio2rdf.org/biogrid/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/biogrid/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_biogrid_PPI
+map:c2b2r_biogrid a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "biogrid/@@c2b2r_biogrid.ID@@";
+	d2rq:class biogrid:biogrid;
+	d2rq:classDefinitionLabel "c2b2r_biogrid";
+	.
+map:c2b2r_biogrid__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_biogrid.OFFICIAL_SYMBOL_A@@_@@c2b2r_biogrid.OFFICIAL_SYMBOL_A@@";
+	.
+map:c2b2r_biogrid_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid ID";
+	d2rq:column "c2b2r_biogrid.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_biogrid_OFFICIAL_SYMBOL_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:official_symbol_a;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_biogrid.OFFICIAL_SYMBOL_A)";
+	.
+map:c2b2r_biogrid_INTERACTOR_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:interactor_a;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid interactor_A";
+	d2rq:column "c2b2r_biogrid.INTERACTOR_A";
+	.
+map:c2b2r_biogrid_OFFICIAL_SYMBOL_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:official_symbol_b;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_biogrid.OFFICIAL_SYMBOL_B)";
+	.
+map:c2b2r_biogrid_INTERACTOR_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:interactor_b;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid interactor_B";
+	d2rq:column "c2b2r_biogrid.INTERACTOR_B";
+	.
+map:c2b2r_biogrid_ALIASES_FOR_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:aliases_for_A;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid ALIASES_FOR_A";
+	d2rq:column "c2b2r_biogrid.ALIASES_FOR_A";
+	.
+map:c2b2r_biogrid_ALIASES_FOR_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:aliases_for_B;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid ALIASES_FOR_B";
+	d2rq:column "c2b2r_biogrid.ALIASES_FOR_B";
+	.
+map:c2b2r_biogrid_EXPERIMENTAL_SYSTEM a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:experimental_system;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid  EXPERIMENTAL_SYSTEM";
+	d2rq:column "c2b2r_biogrid.EXPERIMENTAL_SYSTEM";
+	.
+map:c2b2r_biogrid_SOURCE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:source;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid SOURCE";
+	d2rq:column "c2b2r_biogrid.SOURCE";
+	.
+map:c2b2r_biogrid_PUBMED_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:pubmed_id;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubmed:' || c2b2r_biogrid.PUBMED_ID)";
+	.
+map:c2b2r_biogrid_ORGANISM_A_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:organism_A_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid ORGANISM_A_ID";
+	d2rq:column "c2b2r_biogrid.ORGANISM_A_ID";
+	.
+map:c2b2r_biogrid_ORGANISM_B_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_biogrid;
+	d2rq:property biogrid:organism_B_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_biogrid ORGANISM_B_ID";
+	d2rq:column "c2b2r_biogrid.ORGANISM_B_ID";
+	.

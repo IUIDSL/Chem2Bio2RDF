@@ -1,0 +1,210 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/uniprot/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix uniprot: <http://chem2bio2rdf.org/uniprot/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/uniprot/>;
+    d2r:port 8080;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_UNIPROT
+map:c2b2r_UNIPROT a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "uniprot/@@c2b2r_UNIPROT.uniprot|urlify@@";
+	d2rq:class uniprot:uniprot;
+	d2rq:classDefinitionLabel "c2b2r_UNIPROT";
+	.
+map:c2b2r_UNIPROT__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_UNIPROT.uniprot@@";
+	.
+map:c2b2r_UNIPROT_uniprot a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property uniprot:uniprot;
+	d2rq:propertyDefinitionLabel "c2b2r_UNIPROT uniprot";
+	d2rq:column "c2b2r_UNIPROT.uniprot";
+	.
+map:c2b2r_UNIPROT_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/uniprot:' || c2b2r_UNIPROT.uniprot)";
+	.
+map:c2b2r_UNIPROT_uniprot_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.uniprot.org/' || c2b2r_UNIPROT.uniprot)";
+	.
+map:c2b2r_UNIPROT_uniprot2gi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property uniprot:gi;
+	d2rq:propertyDefinitionLabel "UNIPROT gi";
+	d2rq:refersToClassMap map:c2b2r_GI;
+	d2rq:join "c2b2r_Gi2UNIPROT.uniprot => c2b2r_UNIPROT.uniprot" ;
+	d2rq:join "c2b2r_Gi2UNIPROT.gi => c2b2r_GI.GI" ;	
+	.
+map:c2b2r_UNIPROT_uniprot2gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_UNIPROT;
+	d2rq:property uniprot:geneSymbol;
+	d2rq:propertyDefinitionLabel "UNIPROT gene symbol";
+	d2rq:refersToClassMap map:c2b2r_gene;
+	d2rq:join "c2b2r_GENE2UNIPROT.uniprot => c2b2r_UNIPROT.uniprot" ;
+	d2rq:join "c2b2r_GENE2UNIPROT.geneSymbol => c2b2r_gene.geneSymbol" ;
+	.	
+		
+# Table c2b2r_gene
+map:c2b2r_gene a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "gene/@@c2b2r_gene.geneSymbol|urlify@@";
+	d2rq:class uniprot:gene;
+	d2rq:classDefinitionLabel "c2b2r_gene";
+	.
+map:c2b2r_gene__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_gene.geneSymbol@@";
+	.
+map:c2b2r_gene_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property uniprot:geneSymbol;
+	d2rq:propertyDefinitionLabel "c2b2r_gene geneSymbol";
+	d2rq:column "c2b2r_gene.geneSymbol";
+	.
+map:c2b2r_gene_geneID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property uniprot:geneID;
+	d2rq:propertyDefinitionLabel "c2b2r_gene geneID";
+	d2rq:column "c2b2r_gene.geneID";
+	.
+map:c2b2r_gene_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/gene:' || c2b2r_gene.geneSymbol)";
+	.
+map:c2b2r_gene_chem2bio2rdf_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/hgnc/resource/hgnc/' || c2b2r_gene.geneSymbol)";
+	.
+map:c2b2r_gene_pdpedia_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://dbpedia.org/resource/' || c2b2r_gene.geneSymbol)";
+	.
+map:c2b2r_gene_GO a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_gene;
+	d2rq:property uniprot:GO_ID;
+	d2rq:propertyDefinitionLabel "gene  GENE ONTOLOGY ID";
+	d2rq:uriSqlExpression "('http://bio2rdf.org/' || c2b2r_goa_human.go_id)";
+	d2rq:join "c2b2r_gene.geneSymbol <= c2b2r_goa_human.db_object_symbol" ;	
+	.
+# Table c2b2r_enzyme
+map:c2b2r_enzyme a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "enzyme/@@c2b2r_enzyme.ec_number|urlify@@";
+	d2rq:class uniprot:enzyme;
+	d2rq:classDefinitionLabel "c2b2r_enzyme";
+	.
+map:c2b2r_enzyme__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_enzyme;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_enzyme.ec_number@@";
+	.
+map:c2b2r_enzyme_ec_number a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_enzyme;
+	d2rq:property uniprot:ec_number;
+	d2rq:propertyDefinitionLabel "c2b2r_enzyme ec_number";
+	d2rq:column "c2b2r_enzyme.ec_number";
+	.		
+map:c2b2r_enzyme_url a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_enzyme;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.expasy.ch/enzyme/' || c2b2r_enzyme.ec_number)";
+	.
+map:c2b2r_enzyme_bio2rdf_uri a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_enzyme;
+    	d2rq:property owl:sameAs;
+    	d2rq:uriSqlExpression "('http://bio2rdf.org/ec:' || c2b2r_enzyme.ec_number)";
+	.
+			
+# Table c2b2r_GI
+map:c2b2r_GI a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "gi/@@c2b2r_GI.GI@@";
+	d2rq:class uniprot:gi;
+	d2rq:classDefinitionLabel "c2b2r_GI";
+	.
+map:c2b2r_GI__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_GI;
+	d2rq:property rdfs:label;
+	d2rq:pattern "gi:@@c2b2r_GI.GI@@";
+	.
+map:c2b2r_GI_GI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_GI;
+	d2rq:property uniprot:GI;
+	d2rq:propertyDefinitionLabel "c2b2r_GI GI";
+	d2rq:column "c2b2r_GI.GI";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_GI_pubchem_URL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_GI;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.ncbi.nlm.nih.gov/protein/' || c2b2r_GI.GI)";
+	.
+map:c2b2r_GI_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_GI;
+    	d2rq:property owl:sameAs;
+    	d2rq:uriSqlExpression "('http://bio2rdf.org/gi:' || c2b2r_GI.GI)";
+	.
+	
+# Table c2b2r_pdb
+map:c2b2r_PDB a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pdb/@@c2b2r_PDB.pdb@@";
+	d2rq:class uniprot:pdb;
+	d2rq:classDefinitionLabel "c2b2r_PDB";
+	.
+map:c2b2r_PDB__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PDB.pdb@@";
+	.
+map:c2b2r_PDB_pdb a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB;
+	d2rq:property uniprot:pdb;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB PDB";
+	d2rq:column "c2b2r_PDB.pdb";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PDB_URL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.pdb.org/pdb/search/structidSearch.do?structureId=' || c2b2r_PDB.pdb)";
+	.
+map:c2b2r_PDB_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB;
+    	d2rq:property owl:sameAs;
+    	d2rq:uriSqlExpression "('http://bio2rdf.org/pdb:' || c2b2r_PDB.pdb)";
+	.

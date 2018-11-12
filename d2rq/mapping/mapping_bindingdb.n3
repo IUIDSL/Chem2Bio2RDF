@@ -1,0 +1,233 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/bindingdb/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix bindingdb: <http://chem2bio2rdf.org/bindingdb/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/bindingdb/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_BindingDBLigand
+map:c2b2r_BindingDBLigand a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "bindingdb_ligand/@@c2b2r_BindingDBLigand.Monomerid@@";
+	d2rq:class bindingdb:bindingdb_ligand;
+	d2rq:classDefinitionLabel "bindingdb_ligand";
+	.
+map:c2b2r_BindingDBLigand__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_BindingDBLigand.Name@@";
+	.
+map:c2b2r_BindingDBLigand_Title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:Title;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand Title";
+	d2rq:column "c2b2r_BindingDBLigand.Title";
+	.
+map:c2b2r_BindingDBLigand_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand Name";
+	d2rq:column "c2b2r_BindingDBLigand.Name";
+	.
+map:c2b2r_BindingDBLigand_Monomerid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:Monomerid;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand Monomerid";
+	d2rq:column "c2b2r_BindingDBLigand.Monomerid";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_BindingDBLigand_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand inchi";
+	d2rq:column "c2b2r_BindingDBLigand.inchi";
+	.
+map:c2b2r_BindingDBLigand_auxinfo a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:auxinfo;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand auxinfo";
+	d2rq:column "c2b2r_BindingDBLigand.auxinfo";
+	.
+map:c2b2r_BindingDBLigand_inchikey a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:inchikey;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBLigand inchikey";
+	d2rq:column "c2b2r_BindingDBLigand.inchikey";
+	.
+map:c2b2r_BindingDBLigand_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:property bindingdb:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_BindingDBLigand.cid)";		
+	.
+
+# Table c2b2r_BindingDBProtein
+map:c2b2r_BindingDBProtein a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "bindingdb_interaction/@@c2b2r_BindingDBProtein.ID@@";
+	d2rq:class bindingdb:bindingdb_interaction;
+	d2rq:classDefinitionLabel "bindingdb_interaction";
+	.
+map:c2b2r_BindingDBProtein__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property rdfs:label;
+	d2rq:pattern "bindingdb_interaction:@@c2b2r_BindingDBProtein.ID@@";
+	.
+map:c2b2r_BindingDBProtein_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ID";
+	d2rq:column "c2b2r_BindingDBProtein.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_BindingDBProtein_PDB a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:PDB;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein PDB";
+	d2rq:column "c2b2r_BindingDBProtein.PDB";
+	.
+map:c2b2r_BindingDBProtein_pH a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:pH;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein pH";
+	d2rq:column "c2b2r_BindingDBProtein.pH";
+	.
+map:c2b2r_BindingDBProtein_TARGET a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:TARGET;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein TARGET";
+	d2rq:column "c2b2r_BindingDBProtein.TARGET";
+	.
+map:c2b2r_BindingDBProtein_temp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:temp;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein temp";
+	d2rq:column "c2b2r_BindingDBProtein.temp";
+	.
+map:c2b2r_BindingDBProtein_Organism a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:Organism;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein Organism";
+	d2rq:column "c2b2r_BindingDBProtein.Organism";
+	.
+map:c2b2r_BindingDBProtein_ITC a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ITC;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ITC";
+	d2rq:column "c2b2r_BindingDBProtein.ITC";
+	.
+map:c2b2r_BindingDBProtein_affinity_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:affinity_type;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein affinity_type";
+	d2rq:column "c2b2r_BindingDBProtein.affinity_type";
+	.
+map:c2b2r_BindingDBProtein_affinity_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:affinity_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein affinity_value";
+	d2rq:column "c2b2r_BindingDBProtein.affinity_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingDBProtein_affinity_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:affinity_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein affinity_operator";
+	d2rq:column "c2b2r_BindingDBProtein.affinity_operator";
+	.
+map:c2b2r_BindingDBProtein_ki_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ki_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ki_operator";
+	d2rq:column "c2b2r_BindingDBProtein.ki_operator";
+	.
+map:c2b2r_BindingDBProtein_ki_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ki_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ki_value";
+	d2rq:column "c2b2r_BindingDBProtein.ki_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingDBProtein_kd_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:kd_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein kd_operator";
+	d2rq:column "c2b2r_BindingDBProtein.kd_operator";
+	.
+map:c2b2r_BindingDBProtein_kd_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:kd_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein kd_value";
+	d2rq:column "c2b2r_BindingDBProtein.kd_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingDBProtein_ic50_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ic50_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ic50_operator";
+	d2rq:column "c2b2r_BindingDBProtein.ic50_operator";
+	.
+map:c2b2r_BindingDBProtein_ic50_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ic50_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ic50_value";
+	d2rq:column "c2b2r_BindingDBProtein.ic50_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingDBProtein_ec50_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ec50_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ec50_operator";
+	d2rq:column "c2b2r_BindingDBProtein.ec50_operator";
+	.
+map:c2b2r_BindingDBProtein_ec50_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:ec50_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingDBProtein ec50_value";
+	d2rq:column "c2b2r_BindingDBProtein.ec50_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingDBProtein_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_BindingDBProtein.CID_GENE)";
+	.
+map:c2b2r_BindingDBProtein_uniprot a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:uniprot;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_BindingDBProtein.uniprot)";	
+	.
+map:c2b2r_BindingDBProtein_uniprot_bio2rdf a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/uniprot:' || c2b2r_BindingDBProtein.uniprot)";	
+	.	
+map:c2b2r_BindingDBProtein_Monomerid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingDBProtein;
+	d2rq:property bindingdb:Monomerid;
+	d2rq:refersToClassMap map:c2b2r_BindingDBLigand;
+	d2rq:join "c2b2r_BindingDBProtein.Monomerid => c2b2r_BindingDBLigand.Monomerid";
+	.

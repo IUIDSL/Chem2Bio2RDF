@@ -1,0 +1,284 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/dcdb/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix dcdb: <http://chem2bio2rdf.org/dcdb/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/dcdb/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_DCDB_DC_USAGE
+map:c2b2r_DCDB_DC_USAGE a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "dcdb_dc_usage/@@c2b2r_DCDB_DC_USAGE.DCU_ID|urlify@@";
+	d2rq:class dcdb:dcdb_dc_usage;
+	d2rq:classDefinitionLabel "c2b2r_DCDB_DC_USAGE";
+	.
+map:c2b2r_DCDB_DC_USAGE__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property rdfs:label;
+	d2rq:pattern "dcdb_dc_usage:@@c2b2r_DCDB_DC_USAGE.DCU_ID@@";
+	.
+map:c2b2r_DCDB_DC_USAGE_DCU_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:DCU_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE DCU_ID";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.DCU_ID";
+	.
+map:c2b2r_DCDB_DC_USAGE_DOSE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:DOSE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE DOSE";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.DOSE";
+	.
+map:c2b2r_DCDB_DC_USAGE_ADMINISTRATION a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:ADMINISTRATION;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE ADMINISTRATION";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.ADMINISTRATION";
+	.
+map:c2b2r_DCDB_DC_USAGE_DISEASE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:DISEASE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE DISEASE";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.DISEASE";
+	.
+map:c2b2r_DCDB_DC_USAGE_EFFICACY a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:EFFICACY;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE EFFICACY";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.EFFICACY";
+	.
+map:c2b2r_DCDB_DC_USAGE_EFFECT_TYPE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:EFFECT_TYPE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE EFFECT_TYPE";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.EFFECT_TYPE";
+	.
+map:c2b2r_DCDB_DC_USAGE_STAGE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:STAGE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE STAGE";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.STAGE";
+	.
+map:c2b2r_DCDB_DC_USAGE_SOURCE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:property dcdb:SOURCE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_DC_USAGE SOURCE";
+	d2rq:column "c2b2r_DCDB_DC_USAGE.SOURCE";
+	.
+
+# Table c2b2r_DCDB_combination_drug
+map:c2b2r_DCDB_combination_drug a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "dcdb_drug_combination/@@c2b2r_DCDB_combination_drug.DC_ID|urlify@@";
+	d2rq:class dcdb:dcdb_drug_combination;
+	d2rq:classDefinitionLabel "c2b2r_DCDB_combination_drug";
+	.
+map:c2b2r_DCDB_combination_drug__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_DCDB_combination_drug.NAME@@";
+	.
+map:c2b2r_DCDB_combination_drug_DC_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:DC_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_combination_drug DC_ID";
+	d2rq:column "c2b2r_DCDB_combination_drug.DC_ID";
+	.
+map:c2b2r_DCDB_combination_drug_NAME a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:NAME;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_combination_drug NAME";
+	d2rq:column "c2b2r_DCDB_combination_drug.NAME";
+	.
+map:c2b2r_DCDB_combination_drug_COMPONENTS a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:COMPONENTS;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_combination_drug COMPONENTS";
+	d2rq:column "c2b2r_DCDB_combination_drug.COMPONENTS";
+	.
+map:c2b2r_DCDB_combination_drug_COMPONENT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:COMPONENT;
+	d2rq:refersToClassMap map:c2b2r_DCDB_components;
+	d2rq:join "c2b2r_DCDB_combination_drug.DC_ID => c2b2r_DCDB_DC_TO_COMPONENTS.DC_ID";
+	d2rq:join "c2b2r_DCDB_DC_TO_COMPONENTS.DCC_ID => c2b2r_DCDB_components.DCC_ID";
+	.	
+map:c2b2r_DCDB_combination_drug_usage a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:drug_usage;
+	d2rq:refersToClassMap map:c2b2r_DCDB_DC_USAGE;
+	d2rq:join "c2b2r_DCDB_combination_drug.DC_ID => c2b2r_DCDB_DC_TO_DCU.DC_ID";
+	d2rq:join "c2b2r_DCDB_DC_TO_DCU.DCU_ID => c2b2r_DCDB_DC_USAGE.DCU_ID";
+	.
+map:c2b2r_DCDB_combination_drug_interaction a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_combination_drug;
+	d2rq:property dcdb:drug_interaction;
+	d2rq:refersToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:join "c2b2r_DCDB_combination_drug.DC_ID => c2b2r_DCDB_DC_TO_DI.DC_ID";
+	d2rq:join "c2b2r_DCDB_DC_TO_DI.DI_ID => c2b2r_DCDB_drug_interaction.DI_ID";
+	.		
+# Table c2b2r_DCDB_components
+map:c2b2r_DCDB_components a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "dcdb_components/@@c2b2r_DCDB_components.DCC_ID|urlify@@";
+	d2rq:class dcdb:components;
+	d2rq:classDefinitionLabel "c2b2r_DCDB_components";
+	.
+map:c2b2r_DCDB_components__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_DCDB_components.GENERIC_NAME@@";
+	.
+map:c2b2r_DCDB_components_DCC_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:DCC_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components DCC_ID";
+	d2rq:column "c2b2r_DCDB_components.DCC_ID";
+	.
+map:c2b2r_DCDB_components_GENERIC_NAME a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:GENERIC_NAME;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components GENERIC_NAME";
+	d2rq:column "c2b2r_DCDB_components.GENERIC_NAME";
+	.
+map:c2b2r_DCDB_components_CASREGISTRY_NUMBER a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:CASREGISTRY_NUMBER;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/cas:' || c2b2r_DCDB_components.CASREGISTRY_NUMBER)";
+	.
+map:c2b2r_DCDB_components_CHEMICAL_FORMULA a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:CHEMICAL_FORMULA;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components CHEMICAL_FORMULA";
+	d2rq:column "c2b2r_DCDB_components.CHEMICAL_FORMULA";
+	.
+map:c2b2r_DCDB_components_CHEMICAL_IUPAC_NAME a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:CHEMICAL_IUPAC_NAME;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components CHEMICAL_IUPAC_NAME";
+	d2rq:column "c2b2r_DCDB_components.CHEMICAL_IUPAC_NAME";
+	.
+map:c2b2r_DCDB_components_PHARMGKB_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:PHARMGKB_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pharmgkb/resource/pharmgkb_drugs/' || c2b2r_DCDB_components.PHARMGKB_ID)";
+	.
+map:c2b2r_DCDB_components_KEGG_DRUG_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:KEGG_DRUG_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components KEGG_DRUG_ID";
+	d2rq:column "c2b2r_DCDB_components.KEGG_DRUG_ID";
+	.
+map:c2b2r_DCDB_components_PUBCHEM_COMPOUND_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:PUBCHEM_COMPOUND_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_DCDB_components.PUBCHEM_COMPOUND_ID)";
+	.
+map:c2b2r_DCDB_components_CHEBI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:CHEBI_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chebi/resource/chebi/CHEBI:' || c2b2r_DCDB_components.CHEBI_ID)";
+	.
+map:c2b2r_DCDB_components_MOLECULAR_WEIGHT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:MOLECULAR_WEIGHT;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components MOLECULAR_WEIGHT";
+	d2rq:column "c2b2r_DCDB_components.MOLECULAR_WEIGHT";
+	.
+map:c2b2r_DCDB_components_INDICATION a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:INDICATION;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components INDICATION";
+	d2rq:column "c2b2r_DCDB_components.INDICATION";
+	.
+map:c2b2r_DCDB_components_PHARMACOLOGY a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:PHARMACOLOGY;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components PHARMACOLOGY";
+	d2rq:column "c2b2r_DCDB_components.PHARMACOLOGY";
+	.
+map:c2b2r_DCDB_components_ACTION_MECHANISM a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:ACTION_MECHANISM;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components ACTION_MECHANISM";
+	d2rq:column "c2b2r_DCDB_components.ACTION_MECHANISM";
+	.
+map:c2b2r_DCDB_components_UPDATE_DATE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:UPDATE_DATE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_components UPDATE_DATE";
+	d2rq:column "c2b2r_DCDB_components.UPDATE_DATE";
+	d2rq:datatype xsd:dateTime;
+	.
+map:c2b2r_DCDB_components_DRUGBANK_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_components;
+	d2rq:property dcdb:DRUGBANK_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/drugbank/resource/drugbank_drug/' || c2b2r_DCDB_components.DRUGBANK_ID)";
+	.
+
+# Table c2b2r_DCDB_drug_interaction
+map:c2b2r_DCDB_drug_interaction a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "dcdb_drug_interaction/@@c2b2r_DCDB_drug_interaction.DI_ID|urlify@@";
+	d2rq:class dcdb:dcdb_drug_interaction;
+	d2rq:classDefinitionLabel "c2b2r_DCDB_drug_interaction";
+	.
+map:c2b2r_DCDB_drug_interaction__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property rdfs:label;
+	d2rq:pattern "dcdb_drug_interaction:@@c2b2r_DCDB_drug_interaction.DI_ID@@";
+	.
+map:c2b2r_DCDB_drug_interaction_DI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property dcdb:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_drug_interaction DI_ID";
+	d2rq:column "c2b2r_DCDB_drug_interaction.DI_ID";
+	.
+map:c2b2r_DCDB_drug_interaction_COMPONENTS a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property dcdb:COMPONENTS;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_drug_interaction COMPONENTS";
+	d2rq:column "c2b2r_DCDB_drug_interaction.COMPONENTS";
+	.
+map:c2b2r_DCDB_drug_interaction_PHARMACAL_CLASSIFICATION a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property dcdb:PHARMACAL_CLASSIFICATION;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_drug_interaction PHARMACAL_CLASSIFICATION";
+	d2rq:column "c2b2r_DCDB_drug_interaction.PHARMACAL_CLASSIFICATION";
+	.
+map:c2b2r_DCDB_drug_interaction_ACTION_TYPE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property dcdb:ACTION_TYPE;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_drug_interaction ACTION_TYPE";
+	d2rq:column "c2b2r_DCDB_drug_interaction.ACTION_TYPE";
+	.
+map:c2b2r_DCDB_drug_interaction_DESCRIPTION a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DCDB_drug_interaction;
+	d2rq:property dcdb:DESCRIPTION;
+	d2rq:propertyDefinitionLabel "c2b2r_DCDB_drug_interaction DESCRIPTION";
+	d2rq:column "c2b2r_DCDB_drug_interaction.DESCRIPTION";
+	.

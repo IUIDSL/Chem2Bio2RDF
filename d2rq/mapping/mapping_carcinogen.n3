@@ -1,0 +1,179 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/carcinogen/WEB-INF/mapping.n3#> .
+@prefix carcinogen: <http://chem2bio2rdf.org/carcinogen/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/carcinogen/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_pesticide
+map:c2b2r_pesticide a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pesticide/@@c2b2r_pesticide.id@@";
+	d2rq:class carcinogen:pesticide;
+	d2rq:classDefinitionLabel "c2b2r_pesticide";
+	.
+map:c2b2r_pesticide__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_pesticide.name@@_@@c2b2r_pesticide.Histopathology@@";
+	.
+map:c2b2r_pesticide_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:id;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_id";
+	d2rq:column "c2b2r_pesticide.id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_pesticide_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_pesticide.cid1)";		
+	.
+map:c2b2r_pesticide_TAXONOMIC a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:taxonomic;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_TAXONOMIC";
+	d2rq:column "c2b2r_pesticide.TAXONOMIC";
+	.
+map:c2b2r_pesticide_STUDYTIME a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:studytime;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_STUDYTIME";
+	d2rq:column "c2b2r_pesticide.STUDYTIME";
+	.
+map:c2b2r_pesticide_DOSETYPE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:dosetype;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_DOSETYPE";
+	d2rq:column "c2b2r_pesticide.DOSETYPE";
+	.
+map:c2b2r_pesticide_TGL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:tgl;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_TGL";
+	d2rq:column "c2b2r_pesticide.TGL";
+	.
+map:c2b2r_pesticide_TOXICITY a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:toxicity;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_TOXICITY";
+	d2rq:column "c2b2r_pesticide.TOXICITY";
+	.
+map:c2b2r_pesticide_USEPATTERN a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:usepattern;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_USEPATTERN";
+	d2rq:column "c2b2r_pesticide.USEPATTERN";
+	.
+map:c2b2r_pesticide_species a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:species;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_species";
+	d2rq:column "c2b2r_pesticide.species";
+	.
+map:c2b2r_pesticide_sex a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:sex;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_sex";
+	d2rq:column "c2b2r_pesticide.sex";
+	.
+map:c2b2r_pesticide_route a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:route;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_route";
+	d2rq:column "c2b2r_pesticide.route";
+	.
+map:c2b2r_pesticide_Histopathology a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:histopathology ;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/carcinogen/resource/histopathology/' || replace(c2b2r_pesticide.Histopathology,' ','_'))";
+	.
+map:c2b2r_pesticide_Site a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pesticide;
+	d2rq:property carcinogen:site;
+	d2rq:propertyDefinitionLabel "c2b2r_pesticide_Site";
+	d2rq:column "c2b2r_pesticide.Site";
+	.
+
+# Table c2b2r_carcinogen
+map:c2b2r_food_additive a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "food_additive/@@c2b2r_food_additive.id@@";
+	d2rq:class carcinogen:food_additive;
+	d2rq:classDefinitionLabel "c2b2r_food_additive";
+	.
+map:c2b2r_food_additive__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_food_additive.name@@_@@c2b2r_food_additive.Histopathology@@";
+	.
+map:c2b2r_food_additive_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:id;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_id";
+	d2rq:column "c2b2r_food_additive.id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_food_additive_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_food_additive.cid1)";		
+	.
+map:c2b2r_food_additive_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:name;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_name";
+	d2rq:column "c2b2r_food_additive.name";
+	.
+map:c2b2r_food_additive_species a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:species;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_species";
+	d2rq:column "c2b2r_food_additive.species";
+	.
+map:c2b2r_food_additive_sex a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:sex;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_sex";
+	d2rq:column "c2b2r_food_additive.sex";
+	.
+map:c2b2r_food_additive_route a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:route;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_route";
+	d2rq:column "c2b2r_food_additive.route";
+	.
+map:c2b2r_food_additive_Histopathology a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:histopathology ;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/carcinogen/resource/histopathology/' || replace(c2b2r_food_additive.Histopathology,' ','_'))";
+	.
+map:c2b2r_food_additive_Site a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_food_additive;
+	d2rq:property carcinogen:Site;
+	d2rq:propertyDefinitionLabel "c2b2r_food_additive_Site";
+	d2rq:column "c2b2r_food_additive.Site";
+	.

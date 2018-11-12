@@ -1,0 +1,15 @@
+\d+ public.chembl_02_activities
+\d+ public.chembl_02_assay2target
+\d+ public.chembl_02_assay_type
+\d+ public.chembl_02_assays
+\d+ public.chembl_02_compound_properties
+\d+ public.chembl_02_compound_records
+\d+ public.chembl_02_compound_synonyms
+\d+ public.chembl_02_compounds
+\d+ public.chembl_02_confidence_score_lookup
+\d+ public.chembl_02_docs
+\d+ public.chembl_02_relationship_type
+\d+ public.chembl_02_source
+\d+ public.chembl_02_target_class
+\d+ public.chembl_02_target_dictionary
+\d+ public.chembl_02_target_type

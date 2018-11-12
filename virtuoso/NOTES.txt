@@ -1,0 +1,58 @@
+cheminfov$ isql-v 1111 dba cheminfov 'EXEC=status()'
+
+cheminfov$ isql-v 1111 dba cheminfov 
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL> status() ;
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+OpenLink Virtuoso  Server
+Version 06.01.3127-pthreads for Linux as of Apr  9 2010 
+Started on: 2012/04/10 21:50 GMT-240
+ 
+Database Status:
+  File size 20185088000, 2464000 pages, 760973 free.
+  2000 buffers, 1986 used, 0 dirty 0 wired down, repl age 2210 0 w. io 0 w/crsr.
+  Disk Usage: 11671781 reads avg 0 msec, 0% r 0% w last  89 s, 5104006 writes,
+    3285 read ahead, batch = 36.  Autocompact 3 in 2 out, 25% saved.
+Gate:  4756 2nd in reads, 0 gate write waits, 0 in while read 0 busy scrap. 
+Log = virtuoso.trx, 2389 bytes
+1702947 pages have been changed since last backup (in checkpoint state)
+Current backup timestamp: 0x0000-0x00-0x00
+Last backup date: unknown
+Clients: 2 connects, max 1 concurrent
+RPC: 44 calls, -10 pending, 1 max until now, 0 queued, 0 burst reads (0%), 0 second brk=116047872
+Checkpoint Remap 0 pages, 0 mapped back. 1532 s atomic time.
+    DB master 2464000 total 760973 free 0 remap 0 mapped back
+   temp  15616 total 15611 free
+ 
+Lock Status: 0 deadlocks of which 0 2r1w, 0 waits,
+   Currently 1 threads running 0 threads waiting 0 threads in vdb.
+Pending:
+ 
+Client 1111:20:  Account: dba, 206 bytes in, 257 bytes out, 1 stmts.
+PID: 6666, OS: unix, Application: unknown, IP#: 127.0.0.1
+Transaction status: PENDING, 1 threads.
+Locks: 
+ 
+ 
+Running Statements:
+ Time (msec) Text
+          70 status() 
+ 
+ 
+Replication Status: Server  db-CHEMINFOV.
+   db-CHEMINFOV         db-CHEMINFOV                  0 OFF.
+ 
+ 
+ 
+ 
+Hash indexes
+ 
+
+43 Rows. -- 70 msec.
+

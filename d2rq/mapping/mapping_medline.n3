@@ -1,0 +1,133 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/medline/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix medline: <http://chem2bio2rdf.org/medline/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/medline/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table medline_biblio
+map:medline_biblio a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "medline/@@medline_biblio.pubmed_id@@";
+	d2rq:class medline:pubmed;
+	d2rq:classDefinitionLabel "medline_biblio";
+	.
+map:medline_biblio__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property rdfs:label;
+	d2rq:pattern "PMID#@@medline_biblio.pubmed_id@@";
+	.
+map:medline_biblio_pubmed_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:PMID;
+	d2rq:propertyDefinitionLabel "medline_biblio ID";
+	d2rq:column "medline_biblio.pubmed_id";
+	d2rq:datatype xsd:int;
+	.
+map:medline_biblio_bio2rdf a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubmed:' || medline_biblio.pubmed_id)";
+	.
+map:medline_biblio_homepage a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.ncbi.nlm.nih.gov/pubmed/' || medline_biblio.pubmed_id)";
+	.		
+map:medline_biblio_issn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:issn;
+	d2rq:propertyDefinitionLabel "medline_biblio issn";
+	d2rq:column "medline_biblio.issn";
+	.
+map:medline_biblio_pubdate_year a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:pub_date_year;
+	d2rq:propertyDefinitionLabel "medline_biblio pub_date_year";
+	d2rq:column "medline_biblio.pub_date_year";
+	.
+map:medline_biblio_journal_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:journal_title;
+	d2rq:propertyDefinitionLabel "medline_biblio journal_title";
+	d2rq:column "medline_biblio.journal_title";
+	.
+map:medline_biblio_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:title;
+	d2rq:column "medline_citation.title";
+	d2rq:join "medline_biblio.pubmed_id <= medline_citation.pubmed_id" ;
+	.		
+map:medline_biblio_abstract a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:abstract;
+	d2rq:column "medline_citation.abstract";
+	d2rq:join "medline_biblio.pubmed_id <= medline_citation.pubmed_id" ;
+	.		
+map:medline_biblio_compound a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || medline_comp.cid)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_comp.pubmed_id" ;
+	.
+map:medline_biblio_compound_bio2rdf a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:cid;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubchem:' || medline_comp.cid)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_comp.pubmed_id" ;
+	.	
+map:medline_biblio_compound_drug a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:DBID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/drugbank/resource/drugbank_drug/' || medline_drug.drugbankid)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_drug.pubmed_id" ;
+	.
+map:medline_biblio_compound_gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || medline_gene.genesymbol)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_gene.pubmed_id" ;
+	.	
+map:medline_biblio_compound_disease a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:disease;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/mesh:' || medline_disease.diseaseid)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_disease.pubmed_id" ;
+	.
+map:medline_biblio_compound_sider a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:side_effect;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/sider/resource/sider/' || medline_sider.umls_id)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_sider.pubmed_id" ;
+	.
+map:medline_biblio_compound_pathway a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:medline_biblio;
+	d2rq:property medline:pathway;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/kegg/resource/kegg_pathway/' || medline_path.kegg_id)";
+	d2rq:join "medline_biblio.pubmed_id <= medline_path.pubmed_id" ;
+	.				

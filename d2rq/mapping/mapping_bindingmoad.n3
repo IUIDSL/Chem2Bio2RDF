@@ -1,0 +1,131 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/bindingmoad/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix bindingmoad: <http://chem2bio2rdf.org/bindingmoad/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/bindingmoad/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_BindingMOAD
+map:c2b2r_BindingMOAD a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "bindingmoad/@@c2b2r_BindingMOAD.ID@@";
+	d2rq:class bindingmoad:bindingmoad;
+	d2rq:classDefinitionLabel "c2b2r_BindingMOAD";
+	.
+map:c2b2r_BindingMOAD__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property rdfs:label;
+	d2rq:pattern "bindingmoad_interation:@@c2b2r_BindingMOAD.ID@@";
+	.
+map:c2b2r_BindingMOAD_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD ID";
+	d2rq:column "c2b2r_BindingMOAD.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_BindingMOAD_ec_number a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:ec_number;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD ec_number";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/enzyme/' || c2b2r_BindingMOAD.ec_number)";
+	.
+map:c2b2r_BindingMOAD_protein_families_notes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:protein_families_notes;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD protein_families_notes";
+	d2rq:column "c2b2r_BindingMOAD.protein_families_notes";
+	.
+map:c2b2r_BindingMOAD_PDB_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:PDB_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD PDB_ID";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/pdb/' || c2b2r_BindingMOAD.PDB_ID)";
+	.
+map:c2b2r_BindingMOAD_ligand a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:ligand;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD ligand";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pdb/resource/pdb_ligand/' || c2b2r_BindingMOAD.ligand)";
+	.
+map:c2b2r_BindingMOAD_ligand_validity a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:ligand_validity;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD ligand_validity";
+	d2rq:column "c2b2r_BindingMOAD.ligand_validity";
+	.
+map:c2b2r_BindingMOAD_affinity_measure a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:affinity_measure;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD affinity_measure";
+	d2rq:column "c2b2r_BindingMOAD.affinity_measure";
+	.
+map:c2b2r_BindingMOAD_affinity_operator a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:affinity_operator;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD affinity_operator";
+	d2rq:column "c2b2r_BindingMOAD.affinity_operator";
+	.
+map:c2b2r_BindingMOAD_affinity_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:affinity_value;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD affinity_value";
+	d2rq:column "c2b2r_BindingMOAD.affinity_value";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_BindingMOAD_affinity_unit a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:affinity_unit;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD affinity_unit";
+	d2rq:column "c2b2r_BindingMOAD.affinity_unit";
+	.
+map:c2b2r_BindingMOAD_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_BindingMOAD smiles";
+	d2rq:column "c2b2r_BindingMOAD.smiles";
+	.
+map:c2b2r_BindingMOAD_gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_BindingMOAD.gene)";
+	.
+map:c2b2r_BindingMOAD_gene_bio2rdf a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:gene;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/gene:' || c2b2r_BindingMOAD.gene)";
+	.	
+map:c2b2r_BindingMOAD_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_BindingMOAD.cid)";
+	.
+map:c2b2r_BindingMOAD_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_BindingMOAD;
+	d2rq:property bindingmoad:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_BindingMOAD.CID_GENE)";
+	.

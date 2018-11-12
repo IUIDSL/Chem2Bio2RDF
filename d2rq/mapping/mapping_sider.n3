@@ -1,0 +1,70 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/sider/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix sider: <http://chem2bio2rdf.org/sider/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/sider/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_side_effect
+map:c2b2r_side_effect a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "sider/@@c2b2r_side_effect.umls_id@@";
+	d2rq:class sider:c2b2r_side_effect;
+	d2rq:classDefinitionLabel "c2b2r_side_effect";
+	.
+map:c2b2r_side_effect__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_side_effect;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_side_effect.side_effect@@";
+	.
+map:c2b2r_side_effect_side_effect a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_side_effect;
+	d2rq:property sider:side_effect;
+	d2rq:propertyDefinitionLabel "c2b2r_side_effect side_effect";
+	d2rq:column "c2b2r_side_effect.side_effect";
+	.
+map:c2b2r_side_effect_umls_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_side_effect;
+	d2rq:property sider:umls_id;
+	d2rq:propertyDefinitionLabel "c2b2r_side_effect umls_id";
+	d2rq:column "c2b2r_side_effect.umls_id";
+	.
+map:c2b2r_side_effect_drug_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_side_effect;
+	d2rq:property sider:drug_name;
+	d2rq:propertyDefinitionLabel "c2b2r_side_effect drug name";
+	d2rq:column "c2b2r_sider_costart.comp_name";
+	d2rq:join "c2b2r_side_effect.side_effect <= c2b2r_sider_costart.side_effect" ;
+	.
+map:c2b2r_side_effect_drug_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_side_effect;
+	d2rq:property sider:cid;
+	d2rq:propertyDefinitionLabel "c2b2r_side_effect compound id";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_sider_costart.cid)";
+	d2rq:join "c2b2r_side_effect.side_effect <= c2b2r_sider_costart.side_effect" ;
+	.
+	

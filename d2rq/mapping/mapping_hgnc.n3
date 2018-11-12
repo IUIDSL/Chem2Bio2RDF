@@ -1,0 +1,285 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/hgnc/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix hgnc: <http://chem2bio2rdf.org/hgnc/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/hgnc/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_HGNC
+map:c2b2r_HGNC a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "hgnc/@@c2b2r_HGNC.HGNC_ID|urlify@@";
+	d2rq:class hgnc:HGNC;
+	d2rq:classDefinitionLabel "c2b2r_HGNC";
+	.
+map:c2b2r_HGNC__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_HGNC.Approved_Symbol@@";
+	.
+map:c2b2r_HGNC_HGNC_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:HGNC_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC HGNC_ID";
+	d2rq:column "c2b2r_HGNC.HGNC_ID";
+	.
+map:c2b2r_HGNC_Approved_Symbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Approved_Symbol;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Approved_Symbol";
+	d2rq:column "c2b2r_HGNC.Approved_Symbol";
+	.
+map:c2b2r_HGNC_Approved_Symbol_gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_HGNC.Approved_Symbol)";
+	.	
+map:c2b2r_HGNC_Approved_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Approved_Name;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Approved_Name";
+	d2rq:column "c2b2r_HGNC.Approved_Name";
+	.
+map:c2b2r_HGNC_Status a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Status;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Status";
+	d2rq:column "c2b2r_HGNC.Status";
+	.
+map:c2b2r_HGNC_Locus_Type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Locus_Type;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Locus_Type";
+	d2rq:column "c2b2r_HGNC.Locus_Type";
+	.
+map:c2b2r_HGNC_Locus_Group a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Locus_Group;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Locus_Group";
+	d2rq:column "c2b2r_HGNC.Locus_Group";
+	.
+map:c2b2r_HGNC_Previous_Symbols a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Previous_Symbols;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Previous_Symbols";
+	d2rq:column "c2b2r_HGNC.Previous_Symbols";
+	.
+map:c2b2r_HGNC_Previous_Names a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Previous_Names;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Previous_Names";
+	d2rq:column "c2b2r_HGNC.Previous_Names";
+	.
+map:c2b2r_HGNC_Aliases a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Aliases;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Aliases";
+	d2rq:column "c2b2r_HGNC.Aliases";
+	.
+map:c2b2r_HGNC_Name_Aliases a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Name_Aliases;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Name_Aliases";
+	d2rq:column "c2b2r_HGNC.Name_Aliases";
+	.
+map:c2b2r_HGNC_Chromosome a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Chromosome;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Chromosome";
+	d2rq:column "c2b2r_HGNC.Chromosome";
+	.
+map:c2b2r_HGNC_Date_Approved a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Date_Approved;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Date_Approved";
+	d2rq:column "c2b2r_HGNC.Date_Approved";
+	.
+map:c2b2r_HGNC_Date_Modified a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Date_Modified;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Date_Modified";
+	d2rq:column "c2b2r_HGNC.Date_Modified";
+	.
+map:c2b2r_HGNC_Date_Symbol_Changed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Date_Symbol_Changed;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Date_Symbol_Changed";
+	d2rq:column "c2b2r_HGNC.Date_Symbol_Changed";
+	.
+map:c2b2r_HGNC_Date_Name_Changed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Date_Name_Changed;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Date_Name_Changed";
+	d2rq:column "c2b2r_HGNC.Date_Name_Changed";
+	.
+map:c2b2r_HGNC_Accession_Numbers a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Accession_Numbers;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Accession_Numbers";
+	d2rq:column "c2b2r_HGNC.Accession_Numbers";
+	.
+map:c2b2r_HGNC_Entrez_Gene_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Entrez_Gene_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Entrez_Gene_ID";
+	d2rq:column "c2b2r_HGNC.Entrez_Gene_ID";
+	.
+map:c2b2r_HGNC_Ensembl_Gene_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Ensembl_Gene_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Ensembl_Gene_ID";
+	d2rq:column "c2b2r_HGNC.Ensembl_Gene_ID";
+	.
+map:c2b2r_HGNC_Mouse_Genome_Database_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Mouse_Genome_Database_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Mouse_Genome_Database_ID";
+	d2rq:column "c2b2r_HGNC.Mouse_Genome_Database_ID";
+	.
+map:c2b2r_HGNC_Specialist_Database_Links a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Specialist_Database_Links;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Specialist_Database_Links";
+	d2rq:column "c2b2r_HGNC.Specialist_Database_Links";
+	.
+map:c2b2r_HGNC_Specialist_Database_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Specialist_Database_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Specialist_Database_IDs";
+	d2rq:column "c2b2r_HGNC.Specialist_Database_IDs";
+	.
+map:c2b2r_HGNC_Pubmed_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Pubmed_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Pubmed_IDs";
+	d2rq:column "c2b2r_HGNC.Pubmed_IDs"
+ 	.
+map:c2b2r_HGNC_RefSeq_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:RefSeq_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC RefSeq_IDs";
+	d2rq:column "c2b2r_HGNC.RefSeq_IDs";
+	.
+map:c2b2r_HGNC_Gene_Family_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Gene_Family_Name;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Gene_Family_Name";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/hgnc/resource/gene_family/' || c2b2r_HGNC.Gene_Family_Name)";
+	.
+map:c2b2r_HGNC_Record_Type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Record_Type;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Record_Type";
+	d2rq:column "c2b2r_HGNC.Record_Type";
+	.
+map:c2b2r_HGNC_Primary_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Primary_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Primary_IDs";
+	d2rq:column "c2b2r_HGNC.Primary_IDs";
+	.
+map:c2b2r_HGNC_Secondary_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Secondary_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Secondary_IDs";
+	d2rq:column "c2b2r_HGNC.Secondary_IDs";
+	.
+map:c2b2r_HGNC_CCDS_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:CCDS_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC CCDS_IDs";
+	d2rq:column "c2b2r_HGNC.CCDS_IDs";
+	.
+map:c2b2r_HGNC_VEGA_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:VEGA_IDs;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC VEGA_IDs";
+	d2rq:column "c2b2r_HGNC.VEGA_IDs";
+	.
+map:c2b2r_HGNC_Locus_Specific_Databases a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Locus_Specific_Databases;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Locus_Specific_Databases";
+	d2rq:column "c2b2r_HGNC.Locus_Specific_Databases";
+	.
+map:c2b2r_HGNC_GDB_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:GDB_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC GDB_ID";
+	d2rq:column "c2b2r_HGNC.GDB_ID";
+	.
+map:c2b2r_HGNC_Entrez_Gene_ID_mapped a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Entrez_Gene_ID_mapped;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Entrez_Gene_ID_mapped";
+	d2rq:column "c2b2r_HGNC.Entrez_Gene_ID_mapped";
+	.
+map:c2b2r_HGNC_OMIM_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:OMIM_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/omim/resource/omim_id/' || c2b2r_HGNC.OMIM_ID)";
+	.
+map:c2b2r_HGNC_RefSeq a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:RefSeq;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC RefSeq";
+	d2rq:column "c2b2r_HGNC.RefSeq";
+	.
+map:c2b2r_HGNC_UniProt_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:UniProt_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_HGNC.UniProt_ID)";
+	.
+map:c2b2r_HGNC_Ensembl_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Ensembl_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Ensembl_ID";
+	d2rq:column "c2b2r_HGNC.Ensembl_ID";
+	.
+map:c2b2r_HGNC_UCSC_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:UCSC_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC UCSC_ID";
+	d2rq:column "c2b2r_HGNC.UCSC_ID";
+	.
+map:c2b2r_HGNC_Mouse_Genome_Database_ID_mapped a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Mouse_Genome_Database_ID_mapped;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Mouse_Genome_Database_ID_mapped";
+	d2rq:column "c2b2r_HGNC.Mouse_Genome_Database_ID_mapped";
+	.
+map:c2b2r_HGNC_Rat_Genome_Database_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Rat_Genome_Database_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HGNC Rat_Genome_Database_ID";
+	d2rq:column "c2b2r_HGNC.Rat_Genome_Database_ID";
+	.
+map:c2b2r_HGNC_Enzyme_IDs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HGNC;
+	d2rq:property hgnc:Enzyme_IDs;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/enzyme/' || c2b2r_HGNC.Enzyme_IDs)";
+	.

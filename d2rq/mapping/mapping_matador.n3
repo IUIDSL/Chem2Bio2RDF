@@ -1,0 +1,144 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/matador/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix matador: <http://chem2bio2rdf.org/matador/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/matador/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table c2b2r_matador
+map:c2b2r_matador a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "matador/@@c2b2r_matador.ID@@";
+	d2rq:class matador:matador;
+	d2rq:classDefinitionLabel "c2b2r_matador";
+	.
+map:c2b2r_matador__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property rdfs:label;
+	d2rq:pattern "c2b2r_matador #@@c2b2r_matador.ID@@";
+	.
+map:c2b2r_matador_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_matador ID";
+	d2rq:column "c2b2r_matador.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_matador_chemical_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:chemical_name;
+	d2rq:propertyDefinitionLabel "c2b2r_matador chemical_name";
+	d2rq:column "c2b2r_matador.chemical_name";
+	.
+map:c2b2r_matador_atc a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:atc;
+	d2rq:propertyDefinitionLabel "c2b2r_matador atc";
+	d2rq:column "c2b2r_matador.atc";
+	.
+map:c2b2r_matador_protein_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:protein_id;
+	d2rq:propertyDefinitionLabel "c2b2r_matador protein_id";
+	d2rq:column "c2b2r_matador.protein_id";
+	.
+map:c2b2r_matador_protein_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:protein_name;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_matador.protein_name)";
+	.
+map:c2b2r_matador_mesh_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:mesh_id;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/mesh:' || c2b2r_matador.mesh_id)";
+	.
+map:c2b2r_matador_protein_score a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:protein_score;
+	d2rq:propertyDefinitionLabel "c2b2r_matador protein_score";
+	d2rq:column "c2b2r_matador.protein_score";
+	.
+map:c2b2r_matador_protein_annotation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:protein_annotation;
+	d2rq:propertyDefinitionLabel "c2b2r_matador protein_annotation";
+	d2rq:column "c2b2r_matador.protein_annotation";
+	.
+map:c2b2r_matador_mesh_score a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:mesh_score;
+	d2rq:propertyDefinitionLabel "c2b2r_matador mesh_score";
+	d2rq:column "c2b2r_matador.mesh_score";
+	.
+map:c2b2r_matador_mesh_annotation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:mesh_annotation;
+	d2rq:propertyDefinitionLabel "c2b2r_matador mesh_annotation";
+	d2rq:column "c2b2r_matador.mesh_annotation";
+	.
+map:c2b2r_matador_matador_score_text a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:matador_score_text;
+	d2rq:propertyDefinitionLabel "c2b2r_matador matador_score_text";
+	d2rq:column "c2b2r_matador.matador_score_text";
+	.
+map:c2b2r_matador_matador_annotation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:matador_annotation;
+	d2rq:propertyDefinitionLabel "c2b2r_matador matador_annotation";
+	d2rq:column "c2b2r_matador.matador_annotation";
+	.
+map:c2b2r_matador_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_matador smiles";
+	d2rq:column "c2b2r_matador.smiles";
+	.
+map:c2b2r_matador_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_matador.CID_GENE)";
+	.
+map:c2b2r_matador_matador_score a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:matador_score;
+	d2rq:propertyDefinitionLabel "c2b2r_matador matador_score";
+	d2rq:column "c2b2r_matador.matador_score";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_matador_uniprot_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:uniprot_id;
+	d2rq:propertyDefinitionLabel "c2b2r_matador matador_score";
+	d2rq:column "c2b2r_matador.uniprot_id";
+	.
+map:c2b2r_matador_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_matador;
+	d2rq:property matador:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_matador.cid)";
+	.

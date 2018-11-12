@@ -1,0 +1,305 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/pharmgkb/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix pharmgkb: <http://chem2bio2rdf.org/pharmgkb/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/pharmgkb/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_PharmGKB_Diseases
+map:c2b2r_PharmGKB_Diseases a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pharmgkb_diseases/@@c2b2r_PharmGKB_Diseases.PharmGKB_Accession_Id|urlify@@";
+	d2rq:class pharmgkb:PharmGKB_Diseases;
+	d2rq:classDefinitionLabel "c2b2r_PharmGKB_Diseases";
+	.
+map:c2b2r_PharmGKB_Diseases__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Diseases;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PharmGKB_Diseases.Name@@";
+	.
+map:c2b2r_PharmGKB_Diseases_PharmGKB_Accession_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Diseases;
+	d2rq:property pharmgkb:PharmGKB_Accession_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Diseases PharmGKB_Accession_Id";
+	d2rq:column "c2b2r_PharmGKB_Diseases.PharmGKB_Accession_Id";
+	.
+map:c2b2r_PharmGKB_Diseases_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Diseases;
+	d2rq:property pharmgkb:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Diseases Name";
+	d2rq:column "c2b2r_PharmGKB_Diseases.Name";
+	.
+map:c2b2r_PharmGKB_Diseases_Alternate_Names a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Diseases;
+	d2rq:property pharmgkb:Alternate_Names;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Diseases Alternate_Names";
+	d2rq:column "c2b2r_PharmGKB_Diseases.Alternate_Names";
+	.
+
+# Table c2b2r_PharmGKB_Drugs
+map:c2b2r_PharmGKB_Drugs a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pharmgkb_drugs/@@c2b2r_PharmGKB_Drugs.PharmGKB_Accession_Id|urlify@@";
+	d2rq:class pharmgkb:pharmGKB_Drugs;
+	d2rq:classDefinitionLabel "c2b2r_PharmGKB_Drugs";
+	.
+map:c2b2r_PharmGKB_Drugs__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PharmGKB_Drugs.Name@@";
+	.
+map:c2b2r_PharmGKB_Drugs_PharmGKB_Accession_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property pharmgkb:PharmGKB_Accession_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Drugs PharmGKB_Accession_Id";
+	d2rq:column "c2b2r_PharmGKB_Drugs.PharmGKB_Accession_Id";
+	.
+map:c2b2r_PharmGKB_Drugs_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property pharmgkb:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Drugs Name";
+	d2rq:column "c2b2r_PharmGKB_Drugs.Name";
+	.
+map:c2b2r_PharmGKB_Drugs_Alternate_Names a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property pharmgkb:Alternate_Names;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Drugs Alternate_Names";
+	d2rq:column "c2b2r_PharmGKB_Drugs.Alternate_Names";
+	.
+map:c2b2r_PharmGKB_Drugs_Type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property pharmgkb:Type;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Drugs Type";
+	d2rq:column "c2b2r_PharmGKB_Drugs.Type";
+	.
+map:c2b2r_PharmGKB_Drugs_DrugBank_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:property pharmgkb:DrugBank_Id;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/drugbank/resource/drugbank_drug/' || c2b2r_PharmGKB_Drugs.DrugBank_Id)";
+	.
+
+# Table c2b2r_PharmGKB_Genes
+map:c2b2r_PharmGKB_Genes a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pharmgkb_genes/@@c2b2r_PharmGKB_Genes.PharmGKB_Accession_Id|urlify@@";
+	d2rq:class pharmgkb:PharmGKB_Genes;
+	d2rq:classDefinitionLabel "c2b2r_PharmGKB_Genes";
+	.
+map:c2b2r_PharmGKB_Genes__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PharmGKB_Genes.Symbol@@";
+	.
+map:c2b2r_PharmGKB_Genes_PharmGKB_Accession_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:PharmGKB_Accession_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes PharmGKB_Accession_Id";
+	d2rq:column "c2b2r_PharmGKB_Genes.PharmGKB_Accession_Id";
+	.
+map:c2b2r_PharmGKB_Genes_Entrez_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Entrez_Id;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/geneid:' || c2b2r_PharmGKB_Genes.Entrez_Id)";
+	.
+map:c2b2r_PharmGKB_Genes_Ensembl_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Ensembl_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Ensembl_Id";
+	d2rq:column "c2b2r_PharmGKB_Genes.Ensembl_Id";
+	.
+map:c2b2r_PharmGKB_Genes_UniProt_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:UniProt_Id;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_PharmGKB_Genes.UniProt_Id)";
+	.
+map:c2b2r_PharmGKB_Genes_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Name";
+	d2rq:column "c2b2r_PharmGKB_Genes.Name";
+	.
+map:c2b2r_PharmGKB_Genes_Symbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Symbol;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_PharmGKB_Genes.Symbol)";
+	.
+map:c2b2r_PharmGKB_Genes_Alternate_Names a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Alternate_Names;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Alternate_Names";
+	d2rq:column "c2b2r_PharmGKB_Genes.Alternate_Names";
+	.
+map:c2b2r_PharmGKB_Genes_Alternate_Symbols a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Alternate_Symbols;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Alternate_Symbols";
+	d2rq:column "c2b2r_PharmGKB_Genes.Alternate_Symbols";
+	.
+map:c2b2r_PharmGKB_Genes_Is_Genotyped a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Is_Genotyped;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Is_Genotyped";
+	d2rq:column "c2b2r_PharmGKB_Genes.Is_Genotyped";
+	.
+map:c2b2r_PharmGKB_Genes_Is_VIP a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Is_VIP;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Is_VIP";
+	d2rq:column "c2b2r_PharmGKB_Genes.Is_VIP";
+	.
+map:c2b2r_PharmGKB_Genes_PD a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:PD;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes PD";
+	d2rq:column "c2b2r_PharmGKB_Genes.PD";
+	.
+map:c2b2r_PharmGKB_Genes_PK a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:PK;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes PK";
+	d2rq:column "c2b2r_PharmGKB_Genes.PK";
+	.
+map:c2b2r_PharmGKB_Genes_Has_Variant_Annotation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:property pharmgkb:Has_Variant_Annotation;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Genes Has_Variant_Annotation";
+	d2rq:column "c2b2r_PharmGKB_Genes.Has_Variant_Annotation";
+	.
+
+# Table c2b2r_PharmGKB_Relationships
+map:c2b2r_PharmGKB_Relationships a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pharmgkb_relationships/@@c2b2r_PharmGKB_Relationships.ID@@";
+	d2rq:class pharmgkb:PharmGKB_Relationships;
+	d2rq:classDefinitionLabel "c2b2r_PharmGKB_Relationships";
+	.
+map:c2b2r_PharmGKB_Relationships__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property rdfs:label;
+	d2rq:pattern "pharmgkb_relationships:@@c2b2r_PharmGKB_Relationships.ID@@";
+	.
+map:c2b2r_PharmGKB_Relationships_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships ID";
+	d2rq:column "c2b2r_PharmGKB_Relationships.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PharmGKB_Relationships_PharmGKB_Accession_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:PharmGKB_Accession_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships PharmGKB_Accession_Id";
+	d2rq:column "c2b2r_PharmGKB_Relationships.PharmGKB_Accession_Id";
+	.
+map:c2b2r_PharmGKB_Relationships_Resource_Id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:Resource_Id;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships Resource_Id";
+	d2rq:column "c2b2r_PharmGKB_Relationships.Resource_Id";
+	.
+map:c2b2r_PharmGKB_Relationships_Relationship_Type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:Relationship_Type;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships Relationship_Type";
+	d2rq:column "c2b2r_PharmGKB_Relationships.Relationship_Type";
+	.
+map:c2b2r_PharmGKB_Relationships_Related_Genes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:Related_Genes;
+	d2rq:refersToClassMap map:c2b2r_PharmGKB_Genes;
+	d2rq:join "c2b2r_PharmGKB_Relationships.ID <= c2b2r_PharmGKB_relation2genes.relation_id" ;
+	d2rq:join "c2b2r_PharmGKB_Genes.PharmGKB_Accession_Id <= c2b2r_PharmGKB_relation2genes.pharmGKB_gene_id" ;
+	.
+map:c2b2r_PharmGKB_Relationships_Related_Drugs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:Related_Drugs;
+	d2rq:refersToClassMap map:c2b2r_PharmGKB_Drugs;
+	d2rq:join "c2b2r_PharmGKB_Relationships.ID <= c2b2r_PharmGKB_relation2drugs.relation_id" ;
+	d2rq:join "c2b2r_PharmGKB_Drugs.PharmGKB_Accession_Id <= c2b2r_PharmGKB_relation2drugs.pharmgkb_drug_id" ;
+	.
+map:c2b2r_PharmGKB_Relationships_Related_Diseases a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:c2b2r_Related_Diseases;
+	d2rq:refersToClassMap map:c2b2r_PharmGKB_Diseases;
+	d2rq:join "c2b2r_PharmGKB_Relationships.ID <= c2b2r_PharmGKB_relation2diseases.relation_id" ;
+	d2rq:join "c2b2r_PharmGKB_Diseases.PharmGKB_Accession_Id <= c2b2r_PharmGKB_relation2diseases.pharmGKB_disease_id" ;
+	.
+map:c2b2r_PharmGKB_Relationships_Categories_of_Evidence a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:Categories_of_Evidence;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships Categories_of_Evidence";
+	d2rq:column "c2b2r_PharmGKB_Relationships.Categories_of_Evidence";
+	.
+map:c2b2r_PharmGKB_Relationships_PharmGKB_Curated a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:property pharmgkb:PharmGKB_Curated;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_Relationships PharmGKB_Curated";
+	d2rq:column "c2b2r_PharmGKB_Relationships.PharmGKB_Curated";
+	.
+	
+# Table c2b2r_PharmGKB_pharmagenomics
+map:c2b2r_PharmGKB_pharmagenomics a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pharmgkb_pharmagenomics/@@c2b2r_PharmGKB_pharmagenomics.ID|urlify@@";
+	d2rq:class pharmgkb:pharmagenomics;
+	d2rq:classDefinitionLabel "c2b2r_PharmGKB_pharmagenomics";
+	.
+map:c2b2r_PharmGKB_pharmagenomics__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PharmGKB_pharmagenomics.CID_GENE@@";
+	.
+map:c2b2r_PharmGKB_pharmagenomics_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property pharmgkb:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_pharmagenomics ID";
+	d2rq:column "c2b2r_PharmGKB_pharmagenomics.ID";
+	.
+map:c2b2r_PharmGKB_pharmagenomics_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property pharmgkb:CID;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_pharmagenomics CID";
+	d2rq:column "c2b2r_PharmGKB_pharmagenomics.CID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PharmGKB_pharmagenomics_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property pharmgkb:GENE;
+	d2rq:propertyDefinitionLabel "c2b2r_PharmGKB_pharmagenomics GENE";
+	d2rq:column "c2b2r_PharmGKB_pharmagenomics.GENE";
+	.
+map:c2b2r_PharmGKB_pharmagenomics_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property pharmgkb:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_PharmGKB_pharmagenomics.CID_GENE)";
+	.
+map:c2b2r_PharmGKB_pharmagenomics_relationship_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PharmGKB_pharmagenomics;
+	d2rq:property pharmgkb:relationship_id;
+	d2rq:refersToClassMap map:c2b2r_PharmGKB_Relationships;
+	d2rq:join "c2b2r_PharmGKB_pharmagenomics.relationship_id => c2b2r_PharmGKB_Relationships.ID";
+	.

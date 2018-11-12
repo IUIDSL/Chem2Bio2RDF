@@ -1,0 +1,246 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/pubchem/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix pubchem: <http://chem2bio2rdf.org/pubchem/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/pubchem/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_compound
+map:c2b2r_compound a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pubchem_compound/@@c2b2r_compound.CID@@";
+	d2rq:class pubchem:pubchem_compound;
+	d2rq:classDefinitionLabel "c2b2r_compound";
+	.
+map:c2b2r_compound__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_compound.CID@@";
+	.
+map:c2b2r_compound_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:CID;
+	d2rq:propertyDefinitionLabel "c2b2r_compound CID";
+	d2rq:column "c2b2r_compound.CID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_compound_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+    	d2rq:property owl:sameAs;
+    	d2rq:uriSqlExpression "('http://bio2rdf.org/pubchem:' || c2b2r_compound.CID)";
+	.
+map:c2b2r_compound_pubchem_URL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property foaf:homepage;
+    	d2rq:uriSqlExpression "('http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=' || c2b2r_compound.CID)";
+	.
+map:c2b2r_compound_lodd_stitch a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+    	d2rq:property owl:sameAs;
+    	d2rq:uriSqlExpression "('http://www4.wiwiss.fu-berlin.de/stitch/resource/chemicals/' || c2b2r_compound.CID)";
+	.	
+map:c2b2r_compound_openeye_can_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:openeye_can_smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_compound openeye_can_smiles";
+	d2rq:column "c2b2r_compound.openeye_can_smiles";
+	.
+map:c2b2r_compound_openeye_iso_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:openeye_iso_smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_compound openeye_iso_smiles";
+	d2rq:column "c2b2r_compound.openeye_iso_smiles";
+	.
+map:c2b2r_compound_std_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:std_inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_compound std_inchi";
+	d2rq:column "c2b2r_compound.std_inchi";
+	.
+map:c2b2r_compound_synonyms a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:synonyms;
+	d2rq:propertyDefinitionLabel "pubchem compound synonyms";
+	d2rq:column "pubchem_synonym.synonym";
+	d2rq:join "c2b2r_compound.CID <= pubchem_synonym.cid" ;
+	.
+map:c2b2r_compound_pubmed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:pubmed;
+	d2rq:propertyDefinitionLabel "pubchem compound pubmed";
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubmed:' || c2b2r_PubMed2compound.pubmed_id)";
+	d2rq:join "c2b2r_compound.CID <= c2b2r_PubMed2compound.cid" ;
+	.
+map:c2b2r_compound_neighbor a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:neighbor;
+	d2rq:propertyDefinitionLabel "pubchem compound neighbor>0.95 MACCS TC";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_compound_neighbors.neighbor)";
+	d2rq:join "c2b2r_compound.CID <= c2b2r_compound_neighbors.CID" ;
+	.	
+map:c2b2r_compound_chemogenomics a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:chemogenomics ;
+	d2rq:propertyDefinitionLabel "all the chemogenomics data related to the compound";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_chemogenomics.cid_gene_new)";
+	d2rq:join "c2b2r_compound.CID <= c2b2r_chemogenomics.CID" ;
+	.
+map:c2b2r_compound_food_additive a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:food_additive_carcinogen;
+	d2rq:propertyDefinitionLabel "food additive related to carcinogen";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/carcinogen/resource/food_additive/' || c2b2r_food_additive.id)";
+	d2rq:join "c2b2r_compound.CID <= c2b2r_food_additive.cid1" ;
+	.
+map:c2b2r_compound_pesticide a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_compound;
+	d2rq:property pubchem:pesticide_carcinogen;
+	d2rq:propertyDefinitionLabel "pesticide related to carcinogen";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/carcinogen/resource/pesticide/' || c2b2r_pesticide.id)";
+	d2rq:join "c2b2r_compound.CID <= c2b2r_pesticide.cid1" ;
+	.
+# Table c2b2r_pubchem_bioassay_description
+map:c2b2r_pubchem_bioassay_description a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pubchem_bioassay/@@c2b2r_pubchem_bioassay_description.aid@@";
+	d2rq:class pubchem:pubchem_bioassay_description;
+	d2rq:classDefinitionLabel "c2b2r_pubchem_bioassay_description";
+	.
+map:c2b2r_pubchem_bioassay_description__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_pubchem_bioassay_description.aid@@";
+	.
+map:c2b2r_pubchem_bioassay_description_aid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:aid;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description aid";
+	d2rq:column "c2b2r_pubchem_bioassay_description.aid";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_pubchem_bioassay_description_pid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:pid;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description pid";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gi/' || c2b2r_pubchem_bioassay_description.pid)";
+	.
+map:c2b2r_pubchem_bioassay_description_ttype a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:ttype;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description ttype";
+	d2rq:column "c2b2r_pubchem_bioassay_description.ttype";
+	.
+map:c2b2r_pubchem_bioassay_description_nmol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:nmol;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description nmol";
+	d2rq:column "c2b2r_pubchem_bioassay_description.nmol";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_pubchem_bioassay_description_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:title;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description title";
+	d2rq:column "c2b2r_pubchem_bioassay_description.title";
+	.
+map:c2b2r_pubchem_bioassay_description_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:property pubchem:description;
+	d2rq:propertyDefinitionLabel "c2b2r_pubchem_bioassay_description description";
+	d2rq:column "c2b2r_pubchem_bioassay_description.description";
+	.
+	
+# Table c2b2r_PubChem_BioAssay
+map:c2b2r_PubChem_BioAssay a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pubchem_bioassay_interaction/@@c2b2r_PubChem_BioAssay.ID@@";
+	d2rq:class pubchem:c2b2r_PubChem_BioAssay;
+	d2rq:classDefinitionLabel "c2b2r_PubChem_BioAssay";
+	.
+map:c2b2r_PubChem_BioAssay__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property rdfs:label;
+	d2rq:pattern "pubchem_bioassay_interaction:@@c2b2r_PubChem_BioAssay.ID@@";
+	.
+map:c2b2r_PubChem_BioAssay_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:BioAssay_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_PubChem_BioAssay ID";
+	d2rq:column "c2b2r_PubChem_BioAssay.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PubChem_BioAssay_SID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:BioAssay_SID;
+	d2rq:propertyDefinitionLabel "c2b2r_PubChem_BioAssay SID";
+	d2rq:column "c2b2r_PubChem_BioAssay.SID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PubChem_BioAssay_Score a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:Score;
+	d2rq:propertyDefinitionLabel "c2b2r_PubChem_BioAssay Score";
+	d2rq:column "c2b2r_PubChem_BioAssay.Score";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PubChem_BioAssay_outcome a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:outcome;
+	d2rq:propertyDefinitionLabel "c2b2r_PubChem_BioAssay outcome";
+	d2rq:column "c2b2r_PubChem_BioAssay.outcome";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PubChem_BioAssay_promiscuous a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:promiscuous;
+	d2rq:propertyDefinitionLabel "c2b2r_PubChem_BioAssay promiscuous";
+	d2rq:column "c2b2r_PubChem_BioAssay.promiscuous";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_PubChem_BioAssay_gi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:gi;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gi/' || c2b2r_PubChem_BioAssay.gi)";
+	.
+map:c2b2r_PubChem_BioAssay_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:CID;
+	d2rq:refersToClassMap map:c2b2r_compound;
+	d2rq:join "c2b2r_PubChem_BioAssay.CID => c2b2r_compound.CID";
+	.
+map:c2b2r_PubChem_BioAssay_AID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:AID;
+	d2rq:refersToClassMap map:c2b2r_pubchem_bioassay_description;
+	d2rq:join "c2b2r_PubChem_BioAssay.AID => c2b2r_pubchem_bioassay_description.aid";
+	.
+map:c2b2r_PubChem_BioAssay_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PubChem_BioAssay;
+	d2rq:property pubchem:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/chemogenomics/' || c2b2r_PubChem_BioAssay.CID_GENE)";
+	.
+	

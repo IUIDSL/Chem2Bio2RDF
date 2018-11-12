@@ -1,0 +1,850 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/chembl/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix chembl: <http://chem2bio2rdf.org/chembl/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/chembl/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document  metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_chembl_02_chemogenomics
+map:c2b2r_chembl_08_chemogenomics a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_chemogenomics/@@c2b2r_chembl_08_chemogenomics.cid_gene_activities@@";
+	d2rq:class chembl:chembl_chemogenomics ;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_chemogenomics";
+	.
+map:c2b2r_chembl_08_chemogenomics__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_chemogenomics:@@c2b2r_chembl_08_chemogenomics.cid_gene_activities@@";
+	.
+map:c2b2r_chembl_08_chemogenomics_cid_gene_activities a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property chembl:cid_gene_activities;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities cid_gene_activities";
+	d2rq:column "c2b2r_chembl_08_chemogenomics.cid_gene_activities";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_chemogenomics_activity a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property chembl:activity_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:join "c2b2r_chembl_08_chemogenomics.activity_id => c2b2r_chembl_08_activities.activity_id";
+	.
+map:c2b2r_chembl_08_chemogenomics_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property chembl:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_chembl_08_chemogenomics.cid)";
+	.
+map:c2b2r_chembl_08_chemogenomics_gene_symbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property chembl:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_chembl_08_chemogenomics.gene_symbol)";
+	.
+map:c2b2r_chembl_08_chemogenomics_cid_gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_chemogenomics;
+	d2rq:property chembl:chemogenomics;
+	d2rq:propertyDefinitionLabel "link to chemogenomics hub";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || replace(c2b2r_chembl_08_chemogenomics.cid_gene,':','~'))";
+	.
+
+# Table c2b2r_chembl_08_activities
+map:c2b2r_chembl_08_activities a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_activities/@@c2b2r_chembl_08_activities.activity_id@@";
+	d2rq:class chembl:chembl_activities;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_activities";
+	.
+map:c2b2r_chembl_08_activities__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_activities:@@c2b2r_chembl_08_activities.activity_id@@";
+	.
+map:c2b2r_chembl_08_activities_activity_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:activity_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities activity_id";
+	d2rq:column "c2b2r_chembl_08_activities.activity_id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_activities_relation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:relation;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities relation";
+	d2rq:column "c2b2r_chembl_08_activities.relation";
+	.
+map:c2b2r_chembl_08_activities_published_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:published_value;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities published_value";
+	d2rq:column "c2b2r_chembl_08_activities.published_value";
+	.
+map:c2b2r_chembl_08_activities_published_units a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:published_units;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities published_units";
+	d2rq:column "c2b2r_chembl_08_activities.published_units";
+	.
+map:c2b2r_chembl_08_activities_standard_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:standard_value;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities standard_value";
+	d2rq:column "c2b2r_chembl_08_activities.standard_value";
+	d2rq:datatype xsd:double;
+	.
+map:c2b2r_chembl_08_activities_standard_units a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:standard_units;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities standard_units";
+	d2rq:column "c2b2r_chembl_08_activities.standard_units";
+	.
+map:c2b2r_chembl_08_activities_standard_flag a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:standard_flag;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities standard_flag";
+	d2rq:column "c2b2r_chembl_08_activities.standard_flag";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_activities_standard_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:standard_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities standard_type";
+	d2rq:column "c2b2r_chembl_08_activities.standard_type";
+	.
+map:c2b2r_chembl_08_activities_activity_comment a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:activity_comment;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities activity_comment";
+	d2rq:column "c2b2r_chembl_08_activities.activity_comment";
+	.
+map:c2b2r_chembl_08_activities_published_activity_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:published_activity_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_activities published_activity_type";
+	d2rq:column "c2b2r_chembl_08_activities.published_activity_type";
+	.
+map:c2b2r_chembl_08_activities_record_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:record_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:join "c2b2r_chembl_08_activities.record_id => c2b2r_chembl_08_compound_records.record_id";
+	.
+map:c2b2r_chembl_08_activities_doc_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:doc_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:join "c2b2r_chembl_08_activities.doc_id => c2b2r_chembl_08_docs.doc_id";
+	.
+map:c2b2r_chembl_08_activities_molregno a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:molregno;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:join "c2b2r_chembl_08_activities.molregno => c2b2r_chembl_08_compounds.molregno";
+	.
+map:c2b2r_chembl_08_activities_assay_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_activities;
+	d2rq:property chembl:assay_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:join "c2b2r_chembl_08_activities.assay_id => c2b2r_chembl_08_assays.assay_id";
+	.
+	
+# Table c2b2r_chembl_08_assay2target
+map:c2b2r_chembl_08_assay2target a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_assay2targets/@@c2b2r_chembl_08_assay2target.assay_id@@~@@c2b2r_chembl_08_assay2target.tid|urlify@@";
+	d2rq:class chembl:chembl_assay2targets;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_assay2targets";
+	.
+map:c2b2r_chembl_08_assay2target__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_assay2target:@@c2b2r_chembl_08_assay2target.assay_id@@~@@c2b2r_chembl_08_assay2target.tid@@";
+	.
+map:c2b2r_chembl_08_assay2target_assay_tax_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:assay_tax_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target assay_tax_id";
+	d2rq:column "c2b2r_chembl_08_assay2target.assay_tax_id";
+	.
+map:c2b2r_chembl_08_assay2target_assay_organism a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:assay_organism;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target assay_organism";
+	d2rq:column "c2b2r_chembl_08_assay2target.assay_organism";
+	.
+map:c2b2r_chembl_08_assay2target_complex a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:complex;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target complex";
+	d2rq:column "c2b2r_chembl_08_assay2target.complex";
+	.
+map:c2b2r_chembl_08_assay2target_multi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:multi;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target multi";
+	d2rq:column "c2b2r_chembl_08_assay2target.multi";
+	.
+map:c2b2r_chembl_08_assay2target_assay_strain a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:assay_strain;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target assay_strain";
+	d2rq:column "c2b2r_chembl_08_assay2target.assay_strain";
+	.
+map:c2b2r_chembl_08_assay2target_confidence_score a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:confidence_score;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target confidence_score";
+	d2rq:column "c2b2r_chembl_08_assay2target.confidence_score";
+	.
+map:c2b2r_chembl_08_assay2target_confidence_score_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:confidence_score_description;
+	d2rq:column "c2b2r_chembl_08_confidence_score_lookup.description";
+	d2rq:join "c2b2r_chembl_08_assay2target.confidence_score => c2b2r_chembl_08_confidence_score_lookup.confidence_score";
+	.	
+map:c2b2r_chembl_08_assay2target_relationship_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:relationship_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assay2target relationship_type";
+	d2rq:column "c2b2r_chembl_08_assay2target.relationship_type";
+	.
+map:c2b2r_chembl_08_assay2target_relationship_type_desc a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:relationship_type_description;
+	d2rq:column "c2b2r_chembl_08_relationship_type.relationship_desc";
+	d2rq:join "c2b2r_chembl_08_assay2target.relationship_type => c2b2r_chembl_08_relationship_type.relationship_type";
+	.	
+map:c2b2r_chembl_08_assay2target_assay_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:assay_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:join "c2b2r_chembl_08_assay2target.assay_id => c2b2r_chembl_08_assays.assay_id";
+	.
+map:c2b2r_chembl_08_assay2target_tid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assay2target;
+	d2rq:property chembl:tid;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:join "c2b2r_chembl_08_assay2target.tid => c2b2r_chembl_08_target_dictionary.tid";
+	.
+
+# Table c2b2r_chembl_08_assays
+map:c2b2r_chembl_08_assays a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_assays/@@c2b2r_chembl_08_assays.assay_id@@";
+	d2rq:class chembl:chembl_assays;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_assays";
+	.
+map:c2b2r_chembl_08_assays__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_assays:@@c2b2r_chembl_08_assays.assay_id@@";
+	.
+map:c2b2r_chembl_08_assays_assay_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property chembl:assay_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assays assay_id";
+	d2rq:column "c2b2r_chembl_08_assays.assay_id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_assays_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property chembl:description;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assays description";
+	d2rq:column "c2b2r_chembl_08_assays.description";
+	.
+map:c2b2r_chembl_08_assays_assay_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property chembl:assay_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_assays assay_type";
+	d2rq:column "c2b2r_chembl_08_assays.assay_type";
+	.	
+map:c2b2r_chembl_08_assays_doc_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property chembl:doc_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:join "c2b2r_chembl_08_assays.doc_id => c2b2r_chembl_08_docs.doc_id";
+	.
+map:c2b2r_chembl_08_assays_assay_type_desc a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_assays;
+	d2rq:property chembl:assay_type_desc;
+	d2rq:column "c2b2r_chembl_08_assay_type.assay_desc";
+	d2rq:join "c2b2r_chembl_08_assays.assay_type => c2b2r_chembl_08_assay_type.assay_type";
+	.
+	
+# Table chembl_08_compounds
+map:c2b2r_chembl_08_compounds a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_compounds/@@c2b2r_chembl_08_compounds.molregno@@";
+	d2rq:class chembl:chembl_compounds;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_compounds";
+	.
+map:c2b2r_chembl_08_compounds__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property rdfs:label;
+	d2rq:pattern "c2b2r_chembl_08_compounds:@@c2b2r_chembl_08_compounds.molregno@@";
+	.
+map:c2b2r_chembl_08_compounds_molregno a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:molregno;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds molregno";
+	d2rq:column "c2b2r_chembl_08_compounds.molregno";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_compounds_molweight a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:molweight;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds molweight";
+	d2rq:column "c2b2r_chembl_08_compounds.molweight";
+	d2rq:datatype xsd:float;
+	.
+map:c2b2r_chembl_08_compounds_molformula a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:molformula;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds molformula";
+	d2rq:column "c2b2r_chembl_08_compounds.molformula";
+	.
+map:c2b2r_chembl_08_compounds_canonical_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:canonical_smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds canonical_smiles";
+	d2rq:column "c2b2r_chembl_08_compounds.canonical_smiles";
+	.
+map:c2b2r_chembl_08_compounds_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds inchi";
+	d2rq:column "c2b2r_chembl_08_compounds.inchi";
+	.
+map:c2b2r_chembl_08_compounds_inchi_key a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:inchi_key;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds inchi_key";
+	d2rq:column "c2b2r_chembl_08_compounds.inchi_key";
+	.
+map:c2b2r_chembl_08_compounds_chebi_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:chebi;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chebi/resource/chebi/CHEBI:' || c2b2r_chembl_08_compounds.chebi_id)";
+	.
+map:c2b2r_chembl_08_compounds_chebi_par_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:chebi_par_id;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chebi/resource/chebi/CHEBI:' || c2b2r_chembl_08_compounds.chebi_par_id)";
+	.
+map:c2b2r_chembl_08_compounds_standard_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:standard_inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds standard_inchi";
+	d2rq:column "c2b2r_chembl_08_compounds.standard_inchi";
+	.
+map:c2b2r_chembl_08_compounds_standard_inchi_key a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:standard_inchi_key;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds standard_inchi_key";
+	d2rq:column "c2b2r_chembl_08_compounds.standard_inchi_key";
+	.
+map:c2b2r_chembl_08_compounds_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_chembl_08_compounds.cid)";
+	.
+map:c2b2r_chembl_08_compounds_downgraded a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:downgraded;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds downgraded ";
+	d2rq:column "c2b2r_chembl_08_compounds.downgraded";
+	.
+map:c2b2r_chembl_08_compounds_max_phase a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:max_phase;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds max_phase";
+	d2rq:column "c2b2r_chembl_08_compounds.max_phase";
+	.
+map:c2b2r_chembl_08_compounds_pref_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:pref_name;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds pref_name";
+	d2rq:column "c2b2r_chembl_08_compounds.pref_name";
+	.
+map:c2b2r_chembl_08_compounds_therapeutic_flag a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:therapeutic_flag;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds therapeutic_flag";
+	d2rq:column "c2b2r_chembl_08_compounds.therapeutic_flag";
+	.
+map:c2b2r_chembl_08_compounds_synonyms a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:synonyms;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds synonyms";
+	d2rq:column "c2b2r_chembl_08_compound_synonyms.synonyms";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_synonyms.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_syn_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:syn_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds synonyms type";
+	d2rq:column "c2b2r_chembl_08_compound_synonyms.syn_type";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_synonyms.molregno" ;
+	.
+
+map:c2b2r_chembl_08_compounds_mw_freebase a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:mw_freebase;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds mw_freebase";
+	d2rq:column "c2b2r_chembl_08_compound_properties.mw_freebase";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_alogp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:alogp;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds alogp";
+	d2rq:column "c2b2r_chembl_08_compound_properties.alogp";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.		
+map:c2b2r_chembl_08_compounds_hba a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:hba;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds hba";
+	d2rq:column "c2b2r_chembl_08_compound_properties.hba";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_hbd a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:hbd;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds hbd";
+	d2rq:column "c2b2r_chembl_08_compound_properties.hbd";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_psa a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:psa;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds psa";
+	d2rq:column "c2b2r_chembl_08_compound_properties.psa";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_rtb a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:rtb;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds rtb";
+	d2rq:column "c2b2r_chembl_08_compound_properties.rtb";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_ro3_pass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:ro3_pass;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds ro3_pass";
+	d2rq:column "c2b2r_chembl_08_compound_properties.ro3_pass";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_num_ro5_violations a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:num_ro5_violations;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds num_ro5_violations";
+	d2rq:column "c2b2r_chembl_08_compound_properties.num_ro5_violations";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.
+map:c2b2r_chembl_08_compounds_med_chem_friendly a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:med_chem_friendly;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds med_chem_friendly";
+	d2rq:column "c2b2r_chembl_08_compound_properties.med_chem_friendly";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.	
+map:c2b2r_chembl_08_compounds_acd_most_apka a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:acd_most_apka;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds acd_most_apka";
+	d2rq:column "c2b2r_chembl_08_compound_properties.acd_most_apka";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.	
+map:c2b2r_chembl_08_compounds_acd_most_bpka a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:med_chem_friendly;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds med_chem_friendly";
+	d2rq:column "c2b2r_chembl_08_compound_properties.med_chem_friendly";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.	
+map:c2b2r_chembl_08_compounds_acd_logp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:acd_logp;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds acd_logp";
+	d2rq:column "c2b2r_chembl_08_compound_properties.acd_logp";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.	
+map:c2b2r_chembl_08_compounds_acd_logd a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:acd_logd;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds acd_logd";
+	d2rq:column "c2b2r_chembl_08_compound_properties.acd_logd";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.	
+map:c2b2r_chembl_08_compounds_molecular_species a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:property chembl:molecular_species;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds molecular_species";
+	d2rq:column "c2b2r_chembl_08_compound_properties.molecular_species";
+	d2rq:join "c2b2r_chembl_08_compounds.molregno <= c2b2r_chembl_08_compound_properties.molregno" ;
+	.								
+# Table chembl_08_compound_records
+map:c2b2r_chembl_08_compound_records a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_compound_records/@@c2b2r_chembl_08_compound_records.record_id@@";
+	d2rq:class chembl:chembl_compound_records;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_compound_records";
+	.
+map:c2b2r_chembl_08_compound_records__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_compound_records:@@c2b2r_chembl_08_compound_records.record_id@@";
+	.
+map:c2b2r_chembl_08_compound_records_record_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:record_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compound_records record_id";
+	d2rq:column "c2b2r_chembl_08_compound_records.record_id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_compound_records_compound_key a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:compound_key;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compound_records compound_key";
+	d2rq:column "c2b2r_chembl_08_compound_records.compound_key";
+	.
+map:c2b2r_chembl_08_compound_records_compound_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:compound_name;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compound_records compound_name";
+	d2rq:column "c2b2r_chembl_08_compound_records.compound_name";
+	.
+map:c2b2r_chembl_08_compound_records_doc_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:doc_id;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:join "c2b2r_chembl_08_compound_records.doc_id => c2b2r_chembl_08_docs.doc_id";
+	.
+map:c2b2r_chembl_08_compound_records_molregno a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:molregno;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_compounds;
+	d2rq:join "c2b2r_chembl_08_compound_records.molregno => c2b2r_chembl_08_compounds.molregno";
+	.
+map:c2b2r_chembl_08_compound_records_src_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_compound_records;
+	d2rq:property chembl:src_description;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_compounds src_description";
+	d2rq:column "c2b2r_chembl_08_source.src_description";
+	d2rq:join "c2b2r_chembl_08_compound_records.src_id <= c2b2r_chembl_08_source.src_id" ;
+	.
+
+# Table chembl_08_docs
+map:c2b2r_chembl_08_docs a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_docs/@@c2b2r_chembl_08_docs.doc_id@@";
+	d2rq:class chembl:chembl_docs;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_docs";
+	.
+map:c2b2r_chembl_08_docs__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_docs:@@c2b2r_chembl_08_docs.doc_id@@";
+	.
+map:c2b2r_chembl_08_docs_doc_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:doc_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs doc_id";
+	d2rq:column "c2b2r_chembl_08_docs.doc_id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_docs_journal a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:journal;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs journal";
+	d2rq:column "c2b2r_chembl_08_docs.journal";
+	.
+map:c2b2r_chembl_08_docs_year a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:year;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs year";
+	d2rq:column "c2b2r_chembl_08_docs.year";
+	.
+map:c2b2r_chembl_08_docs_volume a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:volume;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs volume";
+	d2rq:column "c2b2r_chembl_08_docs.volume";
+	.
+map:c2b2r_chembl_08_docs_issue a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:issue;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs issue";
+	d2rq:column "c2b2r_chembl_08_docs.issue";
+	.
+map:c2b2r_chembl_08_docs_first_page a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:first_page;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs first_page";
+	d2rq:column "c2b2r_chembl_08_docs.first_page";
+	.
+map:c2b2r_chembl_08_docs_last_page a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:last_page;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs last_page";
+	d2rq:column "c2b2r_chembl_08_docs.last_page";
+	.
+map:c2b2r_chembl_08_docs_pubmed_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:pubmed_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs pubmed_id";
+	d2rq:column "c2b2r_chembl_08_docs.pubmed_id";
+	.
+map:c2b2r_chembl_08_docs_HomepageURL a d2rq:PropertyBridge;
+    	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+    	d2rq:property foaf:homepage;
+    	d2rq:uriSqlExpression "TEXTCAT('http://www.ncbi.nlm.nih.gov/pubmed/', c2b2r_chembl_08_docs.pubmed_id)";
+    	.	
+map:c2b2r_chembl_08_docs_bio2rdf_URI a d2rq:PropertyBridge;
+    	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+    	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubmed:' || c2b2r_chembl_08_docs.pubmed_id)";
+    	.    	
+map:c2b2r_chembl_08_docs_doi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_docs;
+	d2rq:property chembl:doi;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_docs doi";
+	d2rq:column "c2b2r_chembl_08_docs.doi";
+	.
+
+# Table c2b2r_chembl_08_target_class
+map:c2b2r_chembl_08_target_class a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_target_class/@@c2b2r_chembl_08_target_class.tc_id@@";
+	d2rq:class chembl:chembl_target_class;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_target_class";
+	.
+map:c2b2r_chembl_08_target_class__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property rdfs:label;
+	d2rq:pattern "chembl_target_class:@@c2b2r_chembl_08_target_class.tc_id@@";
+	.
+map:c2b2r_chembl_08_target_class_tc_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:tc_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class tc_id";
+	d2rq:column "c2b2r_chembl_08_target_class.tc_id";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_target_class_l1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l1;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l1";
+	d2rq:column "c2b2r_chembl_08_target_class.l1";
+	.
+map:c2b2r_chembl_08_target_class_l2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l2;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l2";
+	d2rq:column "c2b2r_chembl_08_target_class.l2";
+	.
+map:c2b2r_chembl_08_target_class_l3 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l3;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l3";
+	d2rq:column "c2b2r_chembl_08_target_class.l3";
+	.
+map:c2b2r_chembl_08_target_class_l4 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l4;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l4";
+	d2rq:column "c2b2r_chembl_08_target_class.l4";
+	.
+map:c2b2r_chembl_08_target_class_l5 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l5;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l5";
+	d2rq:column "c2b2r_chembl_08_target_class.l5";
+	.
+map:c2b2r_chembl_08_target_class_l6 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l6;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l6";
+	d2rq:column "c2b2r_chembl_08_target_class.l6";
+	.
+map:c2b2r_chembl_08_target_class_l7 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l7;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l7";
+	d2rq:column "c2b2r_chembl_08_target_class.l7";
+	.
+map:c2b2r_chembl_08_target_class_l8 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:l8;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class l8";
+	d2rq:column "c2b2r_chembl_08_target_class.l8";
+	.
+map:c2b2r_chembl_08_target_class_target_classification a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:target_classification;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_class target_classification";
+	d2rq:column "c2b2r_chembl_08_target_class.target_classification";
+	.
+map:c2b2r_chembl_08_target_class_tid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_class;
+	d2rq:property chembl:tid;
+	d2rq:refersToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:join "c2b2r_chembl_08_target_class.tid => c2b2r_chembl_08_target_dictionary.tid";
+	.
+
+# Table c2b2r_chembl_08_target_dictionary
+map:c2b2r_chembl_08_target_dictionary a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chembl_targets/@@c2b2r_chembl_08_target_dictionary.tid@@";
+	d2rq:class chembl:chembl_targets;
+	d2rq:classDefinitionLabel "c2b2r_chembl_08_target_dictionary";
+	.
+map:c2b2r_chembl_08_target_dictionary__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_chembl_08_target_dictionary.pref_name@@";
+	.
+map:c2b2r_chembl_08_target_dictionary_tid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:tid;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary tid";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.tid";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chembl_08_target_dictionary_db_source a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:db_source;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary db_source";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.db_source";
+	.
+map:c2b2r_chembl_08_target_dictionary_description a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:description;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary description";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.description";
+	.
+map:c2b2r_chembl_08_target_dictionary_gene_names a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:gene_names;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary gene_names";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.gene_names";
+	.
+map:c2b2r_chembl_08_target_dictionary_pref_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:pref_name;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary pref_name";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.pref_name";
+	.
+map:c2b2r_chembl_08_target_dictionary_synonyms a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:synonyms;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary synonyms";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.synonyms";
+	.
+map:c2b2r_chembl_08_target_dictionary_keywords a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:keywords;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary keywords";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.keywords";
+	.
+map:c2b2r_chembl_08_target_dictionary_protein_sequence a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:protein_sequence;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary protein_sequence";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.protein_sequence";
+	.
+map:c2b2r_chembl_08_target_dictionary_protein_md5sum a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:protein_md5sum;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary protein_md5sum";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.protein_md5sum";
+	.
+map:c2b2r_chembl_08_target_dictionary_tax_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:tax_id;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary tax_id";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.tax_id";
+	.
+map:c2b2r_chembl_08_target_dictionary_organism a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:organism;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary organism";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.organism";
+	.
+map:c2b2r_chembl_08_target_dictionary_tissue a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:tissue;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary tissue";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.tissue";
+	.
+map:c2b2r_chembl_08_target_dictionary_strain a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:strain;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary strain";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.strain";
+	.
+map:c2b2r_chembl_08_target_dictionary_db_version a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:db_version;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary db_version";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.db_version";
+	.
+map:c2b2r_chembl_08_target_dictionary_cell_line a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:cell_line;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary cell_line";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.cell_line";
+	.
+map:c2b2r_chembl_08_target_dictionary_protein_accession a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:uniprot;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_chembl_08_target_dictionary.protein_accession)";
+	.
+map:c2b2r_chembl_08_target_dictionary_ec_number a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:ec_number;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/enzyme/' || c2b2r_chembl_08_target_dictionary.ec_number)";
+	.
+map:c2b2r_chembl_08_target_dictionary_gene_symbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_chembl_08_target_dictionary.gene_symbol)";
+	.	
+map:c2b2r_chembl_08_target_dictionary_target_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:target_type;
+	d2rq:propertyDefinitionLabel "c2b2r_chembl_08_target_dictionary target_type";
+	d2rq:column "c2b2r_chembl_08_target_dictionary.target_type";
+	.
+map:c2b2r_chembl_08_target_dictionary_target_type_desc a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chembl_08_target_dictionary;
+	d2rq:property chembl:target_type_desc;
+	d2rq:column "c2b2r_chembl_08_target_type.target_desc";
+	d2rq:join "c2b2r_chembl_08_target_dictionary.target_type => c2b2r_chembl_08_target_type.target_type";
+	.
+				

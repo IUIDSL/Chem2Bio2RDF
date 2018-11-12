@@ -1,0 +1,71 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/chebi/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix chebi: <http://chem2bio2rdf.org/chebi/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/chebi/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_ChEBI2PubChem
+map:c2b2r_ChEBI2PubChem a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chebi/@@c2b2r_ChEBI2PubChem.chebi|urlify@@";
+	d2rq:class chebi:chebi;
+	d2rq:classDefinitionLabel "c2b2r_ChEBI2PubChem";
+	.
+map:c2b2r_ChEBI2PubChem__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_ChEBI2PubChem.ChEBI_ID@@";
+	.
+map:c2b2r_ChEBI2PubChem_ChEBI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property chebi:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_ChEBI2PubChem ChEBI_ID";
+	d2rq:column "c2b2r_ChEBI2PubChem.ChEBI_ID";
+	.
+map:c2b2r_ChEBI2PubChem_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property chebi:CID;
+	d2rq:propertyDefinitionLabel "c2b2r_ChEBI2PubChem CID";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_ChEBI2PubChem.CID)";
+	.
+map:c2b2r_ChEBI2PubChem_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property chebi:inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_ChEBI2PubChem inchi";
+	d2rq:column "c2b2r_ChEBI2PubChem.inchi";
+	.
+map:c2b2r_ChEBI2PubChem_ChEBI_URL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://www.ebi.ac.uk/chebi/searchId.do?chebiId=' || c2b2r_ChEBI2PubChem.ChEBI_ID)";
+	.
+map:c2b2r_ChEBI2PubChem_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_ChEBI2PubChem;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/' || lower(c2b2r_ChEBI2PubChem.ChEBI_ID))";
+	.

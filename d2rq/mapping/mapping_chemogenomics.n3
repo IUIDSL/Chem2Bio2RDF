@@ -1,0 +1,79 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/chemogenomics/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix chemogenomics: <http://chem2bio2rdf.org/chemogenomics/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/chemogenomics/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table c2b2r_chemogenomics
+map:c2b2r_chemogenomics a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "chemogenomics/@@c2b2r_chemogenomics.cid_gene_new|urlify@@";
+	d2rq:class chemogenomics:chemogenomics;
+	d2rq:classDefinitionLabel "c2b2r_chemogenomics";
+	.
+map:c2b2r_chemogenomics__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_chemogenomics.CID_GENE@@";
+	.
+map:c2b2r_chemogenomics_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:CID_GENE;
+	d2rq:propertyDefinitionLabel "c2b2r_chemogenomics CID_GENE";
+	d2rq:column "c2b2r_chemogenomics.CID_GENE";
+	.
+map:c2b2r_chemogenomics_med_interested a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:med_interested;
+	d2rq:propertyDefinitionLabel "c2b2r_chemogenomics med_interested";
+	d2rq:column "c2b2r_chemogenomics.med_interested";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_chemogenomics_primary_source a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:primary_source;
+	d2rq:propertyDefinitionLabel "c2b2r_chemogenomics primary_source";
+	d2rq:column "c2b2r_chemogenomics.primary_source";
+	.
+map:c2b2r_chemogenomics_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_chemogenomics.GENE)";
+	.
+map:c2b2r_chemogenomics_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:CID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_chemogenomics.CID)";
+	.
+map:c2b2r_chemogenomics_links a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_chemogenomics;
+	d2rq:property chemogenomics:links;
+	d2rq:propertyDefinitionLabel "c2b2r_chemogenomics rest service showing all the possible linkages from multiple sources";
+	d2rq:uriSqlExpression "('http://cheminfov.informatics.indiana.edu/rest/Chem2Bio2RDF/cid_gene/' || c2b2r_chemogenomics.CID_GENE)";
+	.

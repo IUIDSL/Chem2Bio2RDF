@@ -1,0 +1,149 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/dip/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix dip: <http://chem2bio2rdf.org/dip/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/dip/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table c2b2r_DIP_PPI
+map:c2b2r_DIP_PPI a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "dip/@@c2b2r_DIP_PPI.ID@@";
+	d2rq:class dip:dip;
+	d2rq:classDefinitionLabel "c2b2r_DIP_PPI";
+	.
+map:c2b2r_DIP_PPI__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_DIP_PPI.uniprot_A@@_@@c2b2r_DIP_PPI.uniprot_B@@";
+	.
+map:c2b2r_DIP_PPI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI ID";
+	d2rq:column "c2b2r_DIP_PPI.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_DIP_PPI_ID_interactor_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:ID_interactor_A;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI ID_interactor_A";
+	d2rq:column "c2b2r_DIP_PPI.ID_interactor_A";
+	.
+map:c2b2r_DIP_PPI_ID_interactor_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:ID_interactor_B;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI ID_interactor_B";
+	d2rq:column "c2b2r_DIP_PPI.ID_interactor_B";
+	.
+map:c2b2r_DIP_PPI_Alt_ID_interactor_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Alt_ID_interactor_A;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Alt_ID_interactor_A";
+	d2rq:column "c2b2r_DIP_PPI.Alt_ID_interactor_A";
+	.
+map:c2b2r_DIP_PPI_Alt_ID_interactor_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Alt_ID_interactor_B;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Alt_ID_interactor_B";
+	d2rq:column "c2b2r_DIP_PPI.Alt_ID_interactor_B";
+	.
+map:c2b2r_DIP_PPI_Alias_interactor_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Alias_interactor_A;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Alias_interactor_A";
+	d2rq:column "c2b2r_DIP_PPI.Alias_interactor_A";
+	.
+map:c2b2r_DIP_PPI_Alias_interactor_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Alias_interactor_B;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Alias_interactor_B";
+	d2rq:column "c2b2r_DIP_PPI.Alias_interactor_B";
+	.
+map:c2b2r_DIP_PPI_Interaction_detection_method a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Interaction_detection_method;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Interaction_detection_method";
+	d2rq:column "c2b2r_DIP_PPI.Interaction_detection_method";
+	.
+map:c2b2r_DIP_PPI_Publication_1st_author a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Publication_1st_author;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Publication_1st_author";
+	d2rq:column "c2b2r_DIP_PPI.Publication_1st_author";
+	.
+map:c2b2r_DIP_PPI_Publication_Identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Publication_Identifier;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Publication_Identifier";
+	d2rq:column "c2b2r_DIP_PPI.Publication_Identifier";
+	.
+map:c2b2r_DIP_PPI_Taxid_interactor_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Taxid_interactor_A;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/taxon:' || c2b2r_DIP_PPI.Taxid_interactor_A)";
+	.
+map:c2b2r_DIP_PPI_Taxid_interactor_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Taxid_interactor_B;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/taxon:' || c2b2r_DIP_PPI.Taxid_interactor_B)";
+	.
+map:c2b2r_DIP_PPI_Interaction_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Interaction_type;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Interaction_type";
+	d2rq:column "c2b2r_DIP_PPI.Interaction_type";
+	.
+map:c2b2r_DIP_PPI_Source_database a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Source_database;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Source_database";
+	d2rq:column "c2b2r_DIP_PPI.Source_database";
+	.
+map:c2b2r_DIP_PPI_Interaction_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Interaction_identifier;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Interaction_identifier";
+	d2rq:column "c2b2r_DIP_PPI.Interaction_identifier";
+	.
+map:c2b2r_DIP_PPI_Confidence_value a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:Confidence_value;
+	d2rq:propertyDefinitionLabel "c2b2r_DIP_PPI Confidence_value";
+	d2rq:column "c2b2r_DIP_PPI.Confidence_value";
+	.
+map:c2b2r_DIP_PPI_uniprot_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:uniprot_B;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_DIP_PPI.uniprot_B)";
+	.
+map:c2b2r_DIP_PPI_uniprot_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DIP_PPI;
+	d2rq:property dip:uniprot_A;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_DIP_PPI.uniprot_A)";
+	.

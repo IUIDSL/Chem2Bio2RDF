@@ -1,0 +1,173 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/ttd/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix ttd: <http://chem2bio2rdf.org/ttd/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/ttd/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_TTD_drug
+map:c2b2r_TTD_drug a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "ttd_drug/@@c2b2r_TTD_drug.TTD_drug_ID|urlify@@";
+	d2rq:class ttd:drug;
+	d2rq:classDefinitionLabel "c2b2r_TTD_drug";
+	.
+map:c2b2r_TTD_drug__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_TTD_drug.drugName@@";
+	.
+map:c2b2r_TTD_drug_TTD_drug_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:TTD_drug_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug TTD_drug_ID";
+	d2rq:column "c2b2r_TTD_drug.TTD_drug_ID";
+	.
+map:c2b2r_TTD_drug_drugName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:drugName;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug drugName";
+	d2rq:column "c2b2r_TTD_drug.drugName";
+	.
+map:c2b2r_TTD_drug_CAS_Number a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:CAS_Number;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/cas:' || c2b2r_TTD_drug.CAS_Number)";
+	.
+map:c2b2r_TTD_drug_formular a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:formular;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug formular";
+	d2rq:column "c2b2r_TTD_drug.formular";
+	.
+map:c2b2r_TTD_drug_sid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:sid;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug sid";
+	d2rq:column "c2b2r_TTD_drug.sid";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_TTD_drug_ChEBI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:ChEBI_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug ChEBI_ID";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chebi/resource/chebi/CHEBI:' || c2b2r_TTD_drug.ChEBI_ID)";
+	.
+map:c2b2r_TTD_drug_superDrug_ACT a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:superDrug_ACT;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug superDrug_ACT";
+	d2rq:column "c2b2r_TTD_drug.superDrug_ACT";
+	.
+map:c2b2r_TTD_drug_superdrug_CAS a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:superdrug_CAS;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_drug superdrug_CAS";
+	d2rq:column "c2b2r_TTD_drug.superdrug_CAS";
+	.
+map:c2b2r_TTD_drug_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_drug;
+	d2rq:property ttd:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_TTD_drug.ChEBI_ID)";
+	.
+
+# Table c2b2r_TTD_target
+map:c2b2r_TTD_target a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "ttd_interaction/@@c2b2r_TTD_target.ID@@";
+	d2rq:class ttd:interaction;
+	d2rq:classDefinitionLabel "c2b2r_TTD_target";
+	.
+map:c2b2r_TTD_target__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property rdfs:label;
+	d2rq:pattern "ttd_interaction:@@c2b2r_TTD_target.ID@@";
+	.
+map:c2b2r_TTD_target_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target ID";
+	d2rq:column "c2b2r_TTD_target.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_TTD_target_TTD_target a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:TTD_target;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target TTD_target";
+	d2rq:column "c2b2r_TTD_target.TTD_target";
+	.
+map:c2b2r_TTD_target_targetName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:targetName;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target targetName";
+	d2rq:column "c2b2r_TTD_target.targetName";
+	.
+map:c2b2r_TTD_target_targetType a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:targetType;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target targetType";
+	d2rq:column "c2b2r_TTD_target.targetType";
+	.
+map:c2b2r_TTD_target_interaction a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:interaction;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target interaction";
+	d2rq:column "c2b2r_TTD_target.interaction";
+	.
+map:c2b2r_TTD_target_ChemicalName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:ChemicalName;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target ChemicalName";
+	d2rq:column "c2b2r_TTD_target.ChemicalName";
+	.
+map:c2b2r_TTD_target_TTD_drug_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:TTD_drug_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/ttd/resource/ttd_drug/' || c2b2r_TTD_target.TTD_drug_ID)";
+	.
+map:c2b2r_TTD_target_disease a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:disease;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target disease";
+	d2rq:column "c2b2r_TTD_target.disease";
+	.
+map:c2b2r_TTD_target_drug_approved a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:drug_approved;
+	d2rq:propertyDefinitionLabel "c2b2r_TTD_target drug_approved";
+	d2rq:column "c2b2r_TTD_target.drug_approved";
+	.
+map:c2b2r_TTD_target_uniprot a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:uniprot;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_TTD_target.uniprot)";
+	.
+map:c2b2r_TTD_target_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_TTD_target;
+	d2rq:property ttd:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_TTD_target.CID_GENE)";
+	.

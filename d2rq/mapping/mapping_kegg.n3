@@ -1,0 +1,161 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/kegg/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix kegg: <http://chem2bio2rdf.org/kegg/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/kegg/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table c2b2r_KEGG_pathway_info
+map:c2b2r_KEGG_pathway_info a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "kegg_pathway/@@c2b2r_KEGG_pathway_info.pathwayid_abbr|urlify@@";
+	d2rq:class kegg:KEGG_pathway;
+	d2rq:classDefinitionLabel "c2b2r_KEGG_pathway_info";
+	.
+map:c2b2r_KEGG_pathway_info__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_KEGG_pathway_info.PathwayID@@";
+	.
+map:c2b2r_KEGG_pathway_info_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property kegg:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_KEGG_pathway_info ID";
+	d2rq:column "c2b2r_KEGG_pathway_info.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_KEGG_pathway_info_PathwayID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property kegg:Pathway_name;
+	d2rq:propertyDefinitionLabel "c2b2r_KEGG_pathway_info Pathway Name";
+	d2rq:column "c2b2r_KEGG_pathway_info.PathwayID";
+	.
+map:c2b2r_KEGG_pathway_info_pathwayid_abbr a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property kegg:pathwayid;
+	d2rq:propertyDefinitionLabel "c2b2r_KEGG_pathway_info pathwayid_abbr";
+	d2rq:column "c2b2r_KEGG_pathway_info.pathwayid_abbr";
+	.
+map:c2b2r_KEGG_pathway_info_pathwayname a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property kegg:description;
+	d2rq:propertyDefinitionLabel "c2b2r_KEGG_pathway_info pathwayname";
+	d2rq:column "c2b2r_KEGG_pathway_info.pathwayname";
+	.
+map:c2b2r_KEGG_pathway_info_proteins a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_KEGG_pathway_info;
+	d2rq:property kegg:protein;
+	d2rq:propertyDefinitionLabel "c2b2r_KEGG_pathway_info pathwayname";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_KEGG_pathway.Uniprot)";
+	d2rq:join "c2b2r_KEGG_pathway_info.pathwayid_abbr <= c2b2r_KEGG_pathway.PathwayID" ;
+	.
+	
+# Table c2b2r_kegg_ligand_compound_basic
+map:c2b2r_kegg_ligand_compound_basic a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "kegg_ligand/@@c2b2r_kegg_ligand_compound_basic.comp_id|urlify@@";
+	d2rq:class kegg:kegg_ligand;
+	d2rq:classDefinitionLabel "c2b2r_kegg_ligand_compound_basic";
+	.
+map:c2b2r_kegg_ligand_compound_basic__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_kegg_ligand_compound_basic.name@@";
+	.
+map:c2b2r_kegg_ligand_compound_basic_comp_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:comp_id;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_basic comp_id";
+	d2rq:column "c2b2r_kegg_ligand_compound_basic.comp_id";
+	.
+map:c2b2r_kegg_ligand_compound_basic_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:name;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_basic name";
+	d2rq:column "c2b2r_kegg_ligand_compound_basic.name";
+	.
+map:c2b2r_kegg_ligand_compound_basic_inchi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:inchi;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_basic inchi";
+	d2rq:column "c2b2r_kegg_ligand_compound_basic.inchi";
+	.
+map:c2b2r_kegg_ligand_compound_basic_smiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:smiles;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_basic smiles";
+	d2rq:column "c2b2r_kegg_ligand_compound_basic.smiles";
+	.
+map:c2b2r_kegg_ligand_compound_basic_cas a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:cas;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_basic cas";
+	d2rq:uriSqlExpression "('http://bio2rdf.org/cas:' || c2b2r_kegg_ligand_compound_basic.cas)";
+	.
+map:c2b2r_kegg_ligand_compound_basic_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:property kegg:cid;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_kegg_ligand_compound_basic.cid)";
+	.
+
+# Table c2b2r_kegg_ligand_compound_enzyme
+map:c2b2r_kegg_ligand_compound_enzyme a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "kegg_interaction/@@c2b2r_kegg_ligand_compound_enzyme.ID@@";
+	d2rq:class kegg:kegg_interaction;
+	d2rq:classDefinitionLabel "c2b2r_kegg_ligand_compound_enzyme";
+	.
+map:c2b2r_kegg_ligand_compound_enzyme__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_enzyme;
+	d2rq:property rdfs:label;
+	d2rq:pattern "kegg_interaction:@@c2b2r_kegg_ligand_compound_enzyme.ID@@";
+	.
+map:c2b2r_kegg_ligand_compound_enzyme_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_enzyme;
+	d2rq:property kegg:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_enzyme ID";
+	d2rq:column "c2b2r_kegg_ligand_compound_enzyme.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_kegg_ligand_compound_enzyme_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_enzyme;
+	d2rq:property kegg:CID_GENE;
+	d2rq:propertyDefinitionLabel "c2b2r_kegg_ligand_compound_enzyme CID_GENE";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_kegg_ligand_compound_enzyme.CID_GENE)";
+	.
+map:c2b2r_kegg_ligand_compound_enzyme_compound_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_enzyme;
+	d2rq:property kegg:compound_id;
+	d2rq:refersToClassMap map:c2b2r_kegg_ligand_compound_basic;
+	d2rq:join "c2b2r_kegg_ligand_compound_enzyme.compound_id => c2b2r_kegg_ligand_compound_basic.comp_id";
+	.
+map:c2b2r_kegg_ligand_compound_enzyme_ec_num a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_kegg_ligand_compound_enzyme;
+	d2rq:property kegg:ec_number;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/enzyme/' || c2b2r_kegg_ligand_compound_enzyme.ec_num)";
+	.

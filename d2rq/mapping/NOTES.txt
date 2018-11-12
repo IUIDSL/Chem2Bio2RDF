@@ -1,0 +1,35 @@
+grants$ cp d2rq.war /usr/local/tomcat/webapps/drugbank.war 
+
+grants$ sudo cp ~jjyang/Dropbox/IU/SLIS\ job\ 2012/d2rq_mapping/mapping_drugbank.n3 /usr/local/tomcat/webapps/drugbank/WEB-INF/
+
+
+Since all data in Pg schema "public", it is non-trivial to correlate datasets (e.g. drugbank) with tables:
+
+chord=> select table_name from information_schema.tables where table_schema='public' and table_name ilike
+'%drugbank%' ;
+            table_name            
+----------------------------------
+ ctd_disease_drugbank
+ ctd_gene_drugbank
+ c2b2r_drugbankdrug_substructure
+ doid_drugbank
+ drugbank
+ drugbank_drug_sp
+ drugbank_drugtarget_sp
+ drugbank_target
+ drugbank_target_seq
+ gene_drugbank
+ goid_drugbank
+ huge_genopedia_gene_drugbank
+ c2b2r_drugbankdrug_042011
+ c2b2r_drugbanktarget_042011
+ c2b2r_drugbankdrugtarget_042011
+ huge_phenopedia_disease_drugbank
+ drugbank_drugtarget
+ drugbank_drug
+ c2b2r_DrugBankDrugDrug
+ c2b2r_DrugBankDrug
+ c2b2r_DrugBankTarget
+(21 rows)
+
+

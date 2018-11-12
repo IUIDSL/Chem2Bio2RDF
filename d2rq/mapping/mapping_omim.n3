@@ -1,0 +1,102 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/omim/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix omim: <http://chem2bio2rdf.org/omim/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/omim/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+
+# Table c2b2r_omim
+map:c2b2r_omim a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "omim_gene/@@c2b2r_omim.OMIM@@";
+	d2rq:class omim:omim_gene;
+	d2rq:classDefinitionLabel "c2b2r_omim";
+	.
+map:c2b2r_omim__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim;
+	d2rq:property rdfs:label;
+	d2rq:pattern "omim:@@c2b2r_omim.OMIM@@";
+	.
+map:c2b2r_omim_OMIM a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim;
+	d2rq:property omim:OMIM_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_omim OMIM";
+	d2rq:column "c2b2r_omim.OMIM";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_omim_gene a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim;
+	d2rq:property omim:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_omim.gene)";
+	.
+
+# Table c2b2r_omim_disease
+map:c2b2r_omim_disease a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "omim_disease/@@c2b2r_omim_disease.Disease_ID@@";
+	d2rq:class omim:omim_disease;
+	d2rq:classDefinitionLabel "c2b2r_omim_disease";
+	.
+map:c2b2r_omim_disease__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_omim_disease.Name@@";
+	.
+map:c2b2r_omim_disease_Disease_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property omim:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_omim_disease Disease_ID";
+	d2rq:column "c2b2r_omim_disease.Disease_ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_omim_disease_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property omim:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_omim_disease Name";
+	d2rq:column "c2b2r_omim_disease.Name";
+	.
+map:c2b2r_omim_disease_Disorder_class a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property omim:Disorder_class;
+	d2rq:propertyDefinitionLabel "c2b2r_omim_disease Disorder_class";
+	d2rq:column "c2b2r_omim_disease.Disorder_class";
+	.
+map:c2b2r_omim_disease_drugs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property omim:drug;
+	d2rq:propertyDefinitionLabel "c2b2r_omim_disease drug from Drugbank";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/drugbank/resource/drugbank_drug/' || c2b2r_drug_disease.DBID)";
+	d2rq:join "c2b2r_omim_disease.Name <= c2b2r_drug_disease.Disease_Name" ;
+	.
+map:c2b2r_omim_disease_genes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_omim_disease;
+	d2rq:property omim:gene;
+	d2rq:refersToClassMap map:c2b2r_omim;
+	d2rq:join "c2b2r_omim_disease.Disease_ID => c2b2r_OMIM_disease.Disease_ID";
+	d2rq:join "c2b2r_OMIM_disease.OMIM_ID => c2b2r_omim.OMIM";
+	.

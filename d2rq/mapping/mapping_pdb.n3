@@ -1,0 +1,92 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/pdb/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix pdb: <http://chem2bio2rdf.org/pdb/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/pdb/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_PDB_chemicals
+map:c2b2r_PDB_chemicals a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "pdb_ligand/@@c2b2r_PDB_chemicals.id|urlify@@";
+	d2rq:class pdb:pdb;
+	d2rq:classDefinitionLabel "c2b2r_PDB_chemicals";
+	.
+map:c2b2r_PDB_chemicals__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_PDB_chemicals.id@@";
+	.
+map:c2b2r_PDB_chemicals_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:id;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals id";
+	d2rq:column "c2b2r_PDB_chemicals.id";
+	.
+map:c2b2r_PDB_chemicals_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:name;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals name";
+	d2rq:column "c2b2r_PDB_chemicals.name";
+	.
+map:c2b2r_PDB_chemicals_formula a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:formula;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals formula";
+	d2rq:column "c2b2r_PDB_chemicals.formula";
+	.
+map:c2b2r_PDB_chemicals_systematicName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:systematicName;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals systematicName";
+	d2rq:column "c2b2r_PDB_chemicals.systematicName";
+	.
+map:c2b2r_PDB_chemicals_stereoSmiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:stereoSmiles;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals stereoSmiles";
+	d2rq:column "c2b2r_PDB_chemicals.stereoSmiles";
+	.
+map:c2b2r_PDB_chemicals_nonStereoSmiles a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:nonStereoSmiles;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals nonStereoSmiles";
+	d2rq:column "c2b2r_PDB_chemicals.nonStereoSmiles";
+	.
+map:c2b2r_PDB_chemicals_InChi a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:InChi;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals InChi";
+	d2rq:column "c2b2r_PDB_chemicals.InChi";
+	.
+map:c2b2r_PDB_chemicals_cid a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_PDB_chemicals;
+	d2rq:property pdb:cid;
+	d2rq:propertyDefinitionLabel "c2b2r_PDB_chemicals cid";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_PDBLigand2CID.cid)";
+	d2rq:join "c2b2r_PDB_chemicals.id <= c2b2r_PDBLigand2CID.pdb" ;
+	.

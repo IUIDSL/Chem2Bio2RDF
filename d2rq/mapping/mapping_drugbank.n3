@@ -1,0 +1,218 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/drugbank/WEB-INF/mapping.n3#> .
+@prefix db: <> .
+@prefix drugbank: <http://chem2bio2rdf.org/drugbank/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/drugbank/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_DrugBankDrug
+map:c2b2r_DrugBankDrug a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "drugbank_drug/@@c2b2r_DrugBankDrug.DBID|urlify@@";
+	d2rq:class drugbank:DrugBankDrug;
+	d2rq:classDefinitionLabel "c2b2r_DrugBankDrug";
+	.
+map:c2b2r_DrugBankDrug__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_DrugBankDrug.Generic_Name@@";
+	.
+map:c2b2r_DrugBankDrug_DBID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:DBID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrug DBID";
+	d2rq:column "c2b2r_DrugBankDrug.DBID";
+	.
+map:c2b2r_DrugBankDrug_CASRN a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:CASRN;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrug CASRN";
+	d2rq:column "c2b2r_DrugBankDrug.CASRN";
+	.
+map:c2b2r_DrugBankDrug_PubChemSID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:PubChemSID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrug PubChemSID";
+	d2rq:column "c2b2r_DrugBankDrug.PubChemSID";
+	.
+map:c2b2r_DrugBankDrug_SwissProt_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:SwissProt_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrug SwissProt_ID";
+	d2rq:column "c2b2r_DrugBankDrug.SwissProt_ID";
+	.
+map:c2b2r_DrugBankDrug_Generic_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:Generic_Name;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrug Generic_Name";
+	d2rq:column "c2b2r_DrugBankDrug.Generic_Name";
+	.
+map:c2b2r_DrugBankDrug_DrugBank_URL a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property foaf:homepage;
+	d2rq:uriSqlExpression "('http://drugbank.ca/drugs/' || c2b2r_DrugBankDrug.DBID)";
+	.
+map:c2b2r_DrugBankDrug_bio2rdf_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/drugbank_drugs:' || c2b2r_DrugBankDrug.DBID)";
+	.
+map:c2b2r_DrugBankDrug_LODD_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property owl:sameAs;
+	d2rq:uriSqlExpression "('http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/' || c2b2r_DrugBankDrug.DBID)";
+	.
+map:c2b2r_DrugBankDrug_dbpedia_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property owl:sameAs;
+	d2rq:uriColumn "c2b2r_DrugBankDrug.dbpedia_URI";
+	.
+map:c2b2r_DrugBankDrug_dailymed_URI a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property owl:sameAs;
+	d2rq:uriColumn "c2b2r_DrugBankDrug.dailymed_URI";
+	.
+map:c2b2r_DrugBankDrug_CID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:property drugbank:CID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/pubchem/resource/pubchem_compound/' || c2b2r_DrugBankDrug.CID)";
+	.
+
+# Table c2b2r_DrugBankTarget
+map:c2b2r_DrugBankTarget a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "drugbank_interaction/@@c2b2r_DrugBankTarget.ID@@";
+	d2rq:class drugbank:DrugBankTarget;
+	d2rq:classDefinitionLabel "c2b2r_DrugBankTarget";
+	.
+map:c2b2r_DrugBankTarget__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property rdfs:label;
+	d2rq:pattern "c2b2r_DrugBankTarget #@@c2b2r_DrugBankTarget.ID@@";
+	.
+map:c2b2r_DrugBankTarget_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget ID";
+	d2rq:column "c2b2r_DrugBankTarget.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_DrugBankTarget_Name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:Name;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget Name";
+	d2rq:column "c2b2r_DrugBankTarget.Name";
+	.
+map:c2b2r_DrugBankTarget_seq a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:seq;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget seq";
+	d2rq:column "c2b2r_DrugBankTarget.seq";
+	d2rq:datatype xsd:short;
+	.
+map:c2b2r_DrugBankTarget_PDB_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:PDB_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget PDB_ID";
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/pdb/' || c2b2r_DrugBankTarget.PDB_ID)";
+	.
+map:c2b2r_DrugBankTarget_GeneBank_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:GeneBank_ID;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget GeneBank_ID";
+	d2rq:column "c2b2r_DrugBankTarget.GeneBank_ID";
+	.
+map:c2b2r_DrugBankTarget_promiscuous a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:promiscuous;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget promiscuous";
+	d2rq:column "c2b2r_DrugBankTarget.promiscuous";
+	.
+map:c2b2r_DrugBankTarget_human a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:human;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankTarget human";
+	d2rq:column "c2b2r_DrugBankTarget.human";
+	.
+map:c2b2r_DrugBankTarget_SwissProt_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:SwissProt_ID;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_DrugBankTarget.SwissProt_ID)";
+	.
+map:c2b2r_DrugBankTarget_DBID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:DBID;
+	d2rq:refersToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:join "c2b2r_DrugBankTarget.DBID => c2b2r_DrugBankDrug.DBID";
+	.
+map:c2b2r_DrugBankTarget_CID_GENE a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:CID_GENE;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/chemogenomics/resource/chemogenomics/' || c2b2r_DrugBankTarget.CID_GENE)";
+	.
+map:c2b2r_DrugBankTarget_gene_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankTarget;
+	d2rq:property drugbank:gene;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_DrugBankTarget.gene_name)";
+	.
+
+# Table c2b2r_DrugBankDrugDrug
+map:c2b2r_DrugBankDrugDrug a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "drugbank_drug_drug/@@c2b2r_DrugBankDrugDrug.dbid1|urlify@@_@@c2b2r_DrugBankDrugDrug.dbid2|urlify@@";
+	d2rq:class drugbank:DrugBankDrugDrug;
+	d2rq:classDefinitionLabel "c2b2r_DrugBankDrugDrug";
+	.
+map:c2b2r_DrugBankDrugDrug__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrugDrug;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_DrugBankDrugDrug.drug1@@_@@c2b2r_DrugBankDrugDrug.drug2@@";
+	.
+map:c2b2r_DrugBankDrugDrug_drug1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrugDrug;
+	d2rq:property drugbank:drug1;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrugDrug drug 1 name";
+	d2rq:column "c2b2r_DrugBankDrugDrug.drug1";
+	.
+map:c2b2r_DrugBankDrugDrug_drug2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrugDrug;
+	d2rq:property drugbank:drug2;
+	d2rq:propertyDefinitionLabel "c2b2r_DrugBankDrugDrug drug 2 name";
+	d2rq:column "c2b2r_DrugBankDrugDrug.drug2";
+	.
+map:c2b2r_DrugBankTarget_DBID1 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrugDrug;
+	d2rq:property drugbank:dbid1;
+	d2rq:refersToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:join "c2b2r_DrugBankDrugDrug.dbid1 => c2b2r_DrugBankDrug.DBID";
+	.
+map:c2b2r_DrugBankTarget_DBID2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_DrugBankDrugDrug;
+	d2rq:property drugbank:dbid2;
+	d2rq:refersToClassMap map:c2b2r_DrugBankDrug;
+	d2rq:join "c2b2r_DrugBankDrugDrug.dbid2 => c2b2r_DrugBankDrug.DBID";
+	.

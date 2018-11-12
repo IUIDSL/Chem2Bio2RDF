@@ -1,0 +1,155 @@
+@prefix map: <file:/var/lib/tomcat5/webapps/hprd/WEB-INF/mapping.n3#> .
+#@prefix db: <> . remove db
+@prefix hprd: <http://chem2bio2rdf.org/hprd/resource/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/page/> .
+ 
+<> a d2r:Server;
+    rdfs:label "D2R Server";
+    d2r:baseURI <http://chem2bio2rdf.org/hprd/>;
+    d2r:port 80;
+    d2r:documentMetadata [
+        rdfs:comment "This comment is custom document metadata.";
+    ];
+    d2r:vocabularyIncludeInstances true;
+    .
+    
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql://cheminfov.informatics.indiana.edu/chord";
+	d2rq:username "cicc3";
+	d2rq:password "";
+	d2rq:resultSizeLimit 1000;
+	.
+
+# Table c2b2r_HPRD_PPI
+map:c2b2r_HPRD_PPI a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "hprd/@@c2b2r_HPRD_PPI.ID@@";
+	d2rq:class hprd:HPRD_PPI;
+	d2rq:classDefinitionLabel "c2b2r_HPRD_PPI";
+	.
+map:c2b2r_HPRD_PPI__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_HPRD_PPI.Uniprot_A@@_@@c2b2r_HPRD_PPI.uniprot_B@@";
+	.
+map:c2b2r_HPRD_PPI_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI ID";
+	d2rq:column "c2b2r_HPRD_PPI.ID";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_HPRD_PPI_interactor_1_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_1_geneSymbol;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_HPRD_PPI.interactor_1_geneSymbol)";
+	.
+map:c2b2r_HPRD_PPI_interactor_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_A;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI interactor_A";
+	d2rq:column "c2b2r_HPRD_PPI.interactor_A";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_HPRD_PPI_interactor_1_refseq_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_1_refseq_id;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI interactor_1_refseq_id";
+	d2rq:column "c2b2r_HPRD_PPI.interactor_1_refseq_id";
+	.
+map:c2b2r_HPRD_PPI_interactor_2_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_2_geneSymbol;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_HPRD_PPI.interactor_2_geneSymbol)";
+	.
+map:c2b2r_HPRD_PPI_interactor_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_B;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI interactor_B";
+	d2rq:column "c2b2r_HPRD_PPI.interactor_B";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_HPRD_PPI_interactor_2_refseq_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:interactor_2_refseq_id;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI interactor_2_refseq_id";
+	d2rq:column "c2b2r_HPRD_PPI.interactor_2_refseq_id";
+	.
+map:c2b2r_HPRD_PPI_experiment_type a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:experiment_type;
+	d2rq:propertyDefinitionLabel "c2b2r_HPRD_PPI experiment_type";
+	d2rq:column "c2b2r_HPRD_PPI.experiment_type";
+	.
+map:c2b2r_HPRD_PPI_reference_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:reference_id;
+	d2rq:uriSqlExpression "('http://bio2rdf.org/pubmed:' || c2b2r_HPRD_PPI.reference_id)";
+	.
+map:c2b2r_HPRD_PPI_Uniprot_A a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:Uniprot_A;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_HPRD_PPI.Uniprot_A)";
+	.
+map:c2b2r_HPRD_PPI_uniprot_B a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_HPRD_PPI;
+	d2rq:property hprd:uniprot_B;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/uniprot/' || c2b2r_HPRD_PPI.uniprot_B)";
+	.
+
+# Table c2b2r_HPRD_tissue expression
+map:c2b2r_hprd_tissue_expressions a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "tissue_expression/@@c2b2r_hprd_tissue_expressions.hprd_tissue@@";
+	d2rq:class hprd:hprd_tissue_expressions;
+	d2rq:classDefinitionLabel "c2b2r_hprd_tissue_expressions";
+	.
+map:c2b2r_hprd_tissue_expressions__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property rdfs:label;
+	d2rq:pattern "@@c2b2r_hprd_tissue_expressions.hprd_tissue@@";
+	.
+map:c2b2r_hprd_tissue_expressions_ID a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:ID;
+	d2rq:propertyDefinitionLabel "c2b2r_hprd_tissue_expressions hprd_tissue";
+	d2rq:column "c2b2r_hprd_tissue_expressions.hprd_tissue";
+	d2rq:datatype xsd:int;
+	.
+map:c2b2r_hprd_tissue_expressions_geneSymbol a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:geneSymbol;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/uniprot/resource/gene/' || c2b2r_hprd_tissue_expressions.geneSymbol)";
+	.
+map:c2b2r_hprd_tissue_expressions_tissue a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:tissue;
+	d2rq:uriSqlExpression "('http://chem2bio2rdf.org/hprd/resource/tissue/' || c2b2r_hprd_tissue_expressions.tissue)";
+	.
+map:c2b2r_hprd_tissue_expressions_refseq_id  a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:refseq_id ;
+	d2rq:propertyDefinitionLabel "c2b2r_hprd_tissue_expressions refseq_id ";
+	d2rq:column "c2b2r_hprd_tissue_expressions.refseq_id";
+	.
+map:c2b2r_hprd_tissue_expressions_status a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:status;
+	d2rq:propertyDefinitionLabel "c2b2r_hprd_tissue_expressions status";
+	d2rq:column "c2b2r_hprd_tissue_expressions.status";
+	.
+map:c2b2r_hprd_tissue_expressions_reference_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:c2b2r_hprd_tissue_expressions;
+	d2rq:property hprd:reference_id ;
+	d2rq:propertyDefinitionLabel "c2b2r_hprd_tissue_expressions reference_id ";
+	d2rq:column "c2b2r_hprd_tissue_expressions.reference_id";
+	.
