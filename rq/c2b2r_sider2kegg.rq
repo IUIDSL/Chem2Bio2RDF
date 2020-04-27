@@ -1,0 +1,22 @@
+PREFIX sider: <http://chem2bio2rdf.org/rdf/vocab/resource/sider/>
+PREFIX drugbank_interaction: <http://chem2bio2rdf.org/rdf/vocab/resource/drugbank_interaction/>
+PREFIX drugbank_drug: <http://chem2bio2rdf.org/rdf/vocab/resource/drugbank_drug/>
+PREFIX kegg_pathway_protein: <http://chem2bio2rdf.org/rdf/vocab/resource/kegg_pathway_protein/>
+# 
+SELECT
+	?side_effect ?compound ?drug ?uniprot ?pathway_id
+FROM
+	<http://chem2bio2rdf.org/sample>
+WHERE
+{
+	?sider2compound sider:side_effect ?side_effect .
+	FILTER regex(?side_effect,"hepatomegaly","i") .
+	?sider2compound sider:cid ?compound .
+
+	?drug drugbank_drug:CID ?compound .
+	?drug2target drugbank_interaction:DBID ?drug .
+	?drug2target drugbank_interaction:SwissProt_ID ?uniprot .
+
+	?kegg_pathway kegg_pathway_protein:Uniprot ?uniprot .
+	?kegg_pathway kegg_pathway_protein:PathwayID ?pathway_id .
+}

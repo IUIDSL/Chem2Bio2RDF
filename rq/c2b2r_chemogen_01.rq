@@ -1,0 +1,19 @@
+PREFIX compound: <http://chem2bio2rdf.org/rdf/vocab/resource/compound/>
+PREFIX gene: <http://chem2bio2rdf.org/rdf/vocab/resource/gene/>
+PREFIX interaction: <http://chem2bio2rdf.org/rdf/vocab/resource/chemogenomics/>
+#
+SELECT
+	?compound_cid ?geneSymbol ?med_interested ?source
+FROM
+	<http://chem2bio2rdf.org/chem2bio2rdf_chemogenomics>
+WHERE
+{
+	?compound compound:CID ?compound_cid .
+	FILTER (?compound_cid=1000)
+	?interaction interaction:CID ?compound .
+	?interaction interaction:med_interested ?med_interested .
+	?interaction interaction:primary_source ?source .
+	?interaction interaction:GENE ?gene .
+	?gene  gene:geneSymbol  ?geneSymbol .
+	FILTER (?geneSymbol="ADRA1A")
+}

@@ -1,0 +1,20 @@
+PREFIX compound: <http://chem2bio2rdf.org/rdf/vocab/resource/compound/>
+PREFIX drugbank_drug: <http://chem2bio2rdf.org/rdf/vocab/resource/drugbank_drug/>
+PREFIX drugbank_interaction: <http://chem2bio2rdf.org/rdf/vocab/resource/drugbank_interaction/>
+PREFIX gene: <http://chem2bio2rdf.org/rdf/vocab/resource/gene/>
+# 
+SELECT
+	?compound_cid ?geneSymbol
+FROM
+	<http://chem2bio2rdf.org/sample>
+WHERE
+{
+	?compound compound:CID ?compound_cid .
+	?drug drugbank_drug:CID ?compound .
+	?drugtarget drugbank_interaction:DBID ?drug .
+	?drugtarget drugbank_interaction:geneSymbol  ?gene .
+	?drugtarget drugbank_interaction:human ?human .
+	FILTER (?human="1") .
+	?gene  gene:geneSymbol  ?geneSymbol .
+}
+GROUP BY ?compound_cid ?geneSymbol

@@ -1,0 +1,21 @@
+PREFIX compound: <http://chem2bio2rdf.org/pubchem/resource/>
+PREFIX drugbank: <http://chem2bio2rdf.org/drugbank/resource/>
+PREFIX uniprot: <http://chem2bio2rdf.org/uniprot/resource/>
+#
+SELECT
+	?compound_cid ?geneSymbol
+FROM
+	<http://chem2bio2rdf.org/pubchem>
+FROM
+	<http://chem2bio2rdf.org/drugbank>
+FROM
+	<http://chem2bio2rdf.org/uniprot>
+WHERE
+{
+	?compound compound:CID ?compound_cid .
+	FILTER (?compound_cid=123631 or ?compound_cid=84836) .
+	?drug drugbank:CID ?compound .
+	?target drugbank:DBID ?drug .
+	?target drugbank:gene ?gene .
+	?gene uniprot:geneSymbol ?geneSymbol .
+}
